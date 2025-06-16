@@ -2,6 +2,7 @@ package net.kaupenjoe.tutorialmod.entity.custom;
 
 import net.kaupenjoe.tutorialmod.entity.ModEntities;
 import net.kaupenjoe.tutorialmod.entity.ai.RhinoAttackGoal;
+import net.kaupenjoe.tutorialmod.entity.ai.WalkForwardGoal;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -99,18 +100,21 @@ public class RhinoEntity extends Animal {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
 
-        this.goalSelector.addGoal(1, new RhinoAttackGoal(this, 1.0D, true));
+        // this.goalSelector.addGoal(1, new RhinoAttackGoal(this, 1.0D, true));
 
-        this.goalSelector.addGoal(1, new BreedGoal(this, 1.15D));
-        this.goalSelector.addGoal(2, new TemptGoal(this, 1.2D, Ingredient.of(Items.COOKED_BEEF), false));
 
-        this.goalSelector.addGoal(3, new FollowParentGoal(this, 1.1D));
+        this.goalSelector.addGoal(1, new WalkForwardGoal(this, 20));
 
-        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.1D));
-        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 3f));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        // this.goalSelector.addGoal(1, new BreedGoal(this, 1.15D));
+        // this.goalSelector.addGoal(2, new TemptGoal(this, 1.2D, Ingredient.of(Items.COOKED_BEEF), false));
 
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        // this.goalSelector.addGoal(3, new FollowParentGoal(this, 1.1D));
+
+        // this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.1D));
+        // this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 3f));
+        // this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+
+        // this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {

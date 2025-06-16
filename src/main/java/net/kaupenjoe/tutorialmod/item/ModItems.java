@@ -3,7 +3,6 @@ package net.kaupenjoe.tutorialmod.item;
 import net.kaupenjoe.tutorialmod.TutorialMod;
 import net.kaupenjoe.tutorialmod.block.ModBlocks;
 import net.kaupenjoe.tutorialmod.entity.ModEntities;
-import net.kaupenjoe.tutorialmod.entity.custom.ModBoatEntity;
 import net.kaupenjoe.tutorialmod.item.custom.*;
 import net.kaupenjoe.tutorialmod.sound.ModSounds;
 import net.minecraft.world.item.*;
@@ -73,14 +72,6 @@ public class ModItems {
             () -> new SignItem(new Item.Properties().stacksTo(16), ModBlocks.PINE_SIGN.get(), ModBlocks.PINE_WALL_SIGN.get()));
     public static final RegistryObject<Item> PINE_HANGING_SIGN = ITEMS.register("pine_hanging_sign",
             () -> new HangingSignItem(ModBlocks.PINE_HANGING_SIGN.get(), ModBlocks.PINE_WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
-
-    public static final RegistryObject<Item> PINE_BOAT = ITEMS.register("pine_boat",
-            () -> new ModBoatItem(false, ModBoatEntity.Type.PINE, new Item.Properties()));
-    public static final RegistryObject<Item> PINE_CHEST_BOAT = ITEMS.register("pine_chest_boat",
-            () -> new ModBoatItem(true, ModBoatEntity.Type.PINE, new Item.Properties()));
-
-    public static final RegistryObject<Item> DICE = ITEMS.register("dice",
-            () -> new DiceItem(new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
