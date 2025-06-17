@@ -98,12 +98,12 @@ public class RhinoEntity extends Animal {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
+        // this.goalSelector.addGoal(0, new FloatGoal(this));
 
         // this.goalSelector.addGoal(1, new RhinoAttackGoal(this, 1.0D, true));
 
-
-        this.goalSelector.addGoal(1, new WalkForwardGoal(this, 20));
+        this.goalSelector.addGoal(1, new RandomStrollGoal(this, 1.0));
+        //this.goalSelector.addGoal(1, new WalkForwardGoal(this, 20));
 
         // this.goalSelector.addGoal(1, new BreedGoal(this, 1.15D));
         // this.goalSelector.addGoal(2, new TemptGoal(this, 1.2D, Ingredient.of(Items.COOKED_BEEF), false));
