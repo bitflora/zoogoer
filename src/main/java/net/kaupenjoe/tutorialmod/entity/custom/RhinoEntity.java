@@ -1,8 +1,8 @@
 package net.kaupenjoe.tutorialmod.entity.custom;
 
 import net.kaupenjoe.tutorialmod.entity.ModEntities;
-import net.kaupenjoe.tutorialmod.entity.ai.RhinoAttackGoal;
-import net.kaupenjoe.tutorialmod.entity.ai.WalkForwardGoal;
+import net.kaupenjoe.tutorialmod.entity.ai.*;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -102,7 +102,9 @@ public class RhinoEntity extends Animal {
 
         // this.goalSelector.addGoal(1, new RhinoAttackGoal(this, 1.0D, true));
 
-        this.goalSelector.addGoal(1, new RandomStrollGoal(this, 1.0));
+        // this.goalSelector.addGoal(1, new RandomStrollGoal(this, 1.0));
+        var destination = new BlockPos(this.getBlockX() + 10, this.getBlockY() + 10, this.getBlockZ());
+        this.goalSelector.addGoal(1, new MoveToGoal(this, 1.0, destination));
         //this.goalSelector.addGoal(1, new WalkForwardGoal(this, 20));
 
         // this.goalSelector.addGoal(1, new BreedGoal(this, 1.15D));
