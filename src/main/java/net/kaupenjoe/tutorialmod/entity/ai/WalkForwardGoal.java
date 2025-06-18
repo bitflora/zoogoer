@@ -6,6 +6,10 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.phys.Vec3;
 
+
+/**
+ * Actually works! They move forward about a step every few seconds.
+ */
 public class WalkForwardGoal extends Goal {
     private final PathfinderMob mob;
     private final int maxSteps;

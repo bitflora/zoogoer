@@ -104,7 +104,8 @@ public class RhinoEntity extends Animal {
 
         // this.goalSelector.addGoal(1, new RandomStrollGoal(this, 1.0));
         var destination = new BlockPos(this.getBlockX() + 10, this.getBlockY(), this.getBlockZ() + 10);
-        this.goalSelector.addGoal(1, new MoveToGoal(this, 1.0, destination));
+        // this.goalSelector.addGoal(1, new MoveToGoal(this, 1.0, destination));
+        this.goalSelector.addGoal(1, new WalkForwardGoal(this, 50));
         //this.goalSelector.addGoal(1, new WalkForwardGoal(this, 20));
 
         // this.goalSelector.addGoal(1, new BreedGoal(this, 1.15D));
