@@ -19,18 +19,20 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-public class RhinoEntity extends Animal {
+public class RhinoEntity extends AbstractVillager {
     private static final EntityDataAccessor<Boolean> ATTACKING =
             SynchedEntityData.defineId(RhinoEntity.class, EntityDataSerializers.BOOLEAN);
 
-    public RhinoEntity(EntityType<? extends Animal> pEntityType, Level pLevel) {
+    public RhinoEntity(EntityType<? extends AbstractVillager> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
@@ -136,10 +138,6 @@ public class RhinoEntity extends Animal {
         return ModEntities.RHINO.get().create(pLevel);
     }
 
-    @Override
-    public boolean isFood(ItemStack pStack) {
-        return pStack.is(Items.COOKED_BEEF);
-    }
 
     @Nullable
     @Override
@@ -157,5 +155,15 @@ public class RhinoEntity extends Animal {
     @Override
     protected SoundEvent getDeathSound() {
         return SoundEvents.DOLPHIN_DEATH;
+    }
+
+    @Override
+    protected void rewardTradeXp(MerchantOffer pOffer) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    protected void updateTrades() {
+        // TODO Auto-generated method stub
     }
 }
