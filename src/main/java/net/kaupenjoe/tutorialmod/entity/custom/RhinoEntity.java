@@ -9,6 +9,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.AnimationState;
@@ -19,7 +21,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.AbstractVillager;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -34,6 +38,7 @@ public class RhinoEntity extends AbstractVillager {
 
     public RhinoEntity(EntityType<? extends AbstractVillager> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        this.refreshDimensions();
     }
 
     public final AnimationState idleAnimationState = new AnimationState();
@@ -139,23 +144,23 @@ public class RhinoEntity extends AbstractVillager {
     }
 
 
-    @Nullable
-    @Override
-    protected SoundEvent getAmbientSound() {
-        return SoundEvents.HOGLIN_AMBIENT;
-    }
+    // @Nullable
+    // @Override
+    // protected SoundEvent getAmbientSound() {
+    //     return SoundEvents.HOGLIN_AMBIENT;
+    // }
 
-    @Nullable
-    @Override
-    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return SoundEvents.RAVAGER_HURT;
-    }
+    // @Nullable
+    // @Override
+    // protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+    //     return SoundEvents.RAVAGER_HURT;
+    // }
 
-    @Nullable
-    @Override
-    protected SoundEvent getDeathSound() {
-        return SoundEvents.DOLPHIN_DEATH;
-    }
+    // @Nullable
+    // @Override
+    // protected SoundEvent getDeathSound() {
+    //     return SoundEvents.DOLPHIN_DEATH;
+    // }
 
     @Override
     protected void rewardTradeXp(MerchantOffer pOffer) {
@@ -165,5 +170,36 @@ public class RhinoEntity extends AbstractVillager {
     @Override
     protected void updateTrades() {
         // TODO Auto-generated method stub
+    }
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        // Customize what happens when player right-clicks
+        if (!this.level().isClientSide) {
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.sidedSuccess(this.level().isClientSide);
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distance) {
+        return false; // Prevent despawning like villagers
+    }
+
+    @Override
+    protected void pickUpItem(ItemEntity itemEntity) {
+        // Control what items the entity can pick up
+        // Override to prevent item pickup or customize behavior
+    }
+
+    @Override
+    public boolean isSleeping() {
+        return false; // Prevent sleeping behavior
+    }
+
+    @Override
+    protected void customServerAiStep() {
+        // Override villager's daily schedule logic
+        super.customServerAiStep();
     }
 }
