@@ -27,12 +27,22 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Level;
+
+import javax.annotation.Nonnull;
+
 import org.jetbrains.annotations.Nullable;
 
-public class RhinoEntity extends PathfinderMob { // Not extending AbstractVillager
+public class ZooGoerEntity extends PathfinderMob { // Not extending AbstractVillager
 
-    public RhinoEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
+    public ZooGoerEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
+        this.refreshDimensions();
+    }
+
+    @Override
+    public EntityDimensions getDimensions(@Nonnull Pose pose ) {
+        // Villager dimensions: 0.6F width, 1.95F height
+        return EntityDimensions.scalable(0.6F, 1.95F);
     }
 
     public static AttributeSupplier.Builder createAttributes() {

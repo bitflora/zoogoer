@@ -50,7 +50,7 @@ public class WalkForwardGoal extends Goal {
         tickCounter++;
 
         // Move every 20 ticks (1 second)
-        if (tickCounter >= 20 && mob.onGround() && mob.getNavigation().isDone()) {
+        if (tickCounter >= 20 && mob.getNavigation().isDone()) {
             Vec3 currentPos = mob.position();
             Vec3 targetPos = currentPos.add(initialDirection.scale(1.0));
 

@@ -16,10 +16,10 @@ public class ModCreativeModTabs {
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, TutorialMod.MOD_ID);
 
     public static final RegistryObject<CreativeModeTab> TUTORIAL_TAB = CREATIVE_MODE_TABS.register("tutorial_tab",
-            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.RHINO_SPANW_EGG.get()))
+            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.ZOO_GOER_SPAWN_EGG.get()))
                     .title(Component.translatable("creativetab.tutorial_tab"))
                     .displayItems((pParameters, pOutput) -> {
-                        pOutput.accept(ModItems.RHINO_SPANW_EGG.get());
+                        pOutput.accept(ModItems.ZOO_GOER_SPAWN_EGG.get());
 
 
                     })

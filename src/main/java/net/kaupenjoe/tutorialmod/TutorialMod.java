@@ -4,7 +4,7 @@ import com.mojang.logging.LogUtils;
 import net.kaupenjoe.tutorialmod.block.ModBlocks;
 import net.kaupenjoe.tutorialmod.block.entity.ModBlockEntities;
 import net.kaupenjoe.tutorialmod.entity.ModEntities;
-import net.kaupenjoe.tutorialmod.entity.client.RhinoRenderer;
+import net.kaupenjoe.tutorialmod.entity.client.ZooGoerRenderer;
 import net.kaupenjoe.tutorialmod.item.ModCreativeModTabs;
 import net.kaupenjoe.tutorialmod.item.ModItems;
 import net.kaupenjoe.tutorialmod.loot.ModLootModifiers;
@@ -79,7 +79,7 @@ public class TutorialMod {
         public static void onClientSetup(FMLClientSetupEvent event) {
             Sheets.addWoodType(ModWoodTypes.PINE);
 
-            EntityRenderers.register(ModEntities.RHINO.get(), RhinoRenderer::new);
+            EntityRenderers.register(ModEntities.ZOO_GOER.get(), ZooGoerRenderer::new);
 
         }
     }
