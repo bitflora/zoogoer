@@ -2,6 +2,7 @@ package net.kaupenjoe.tutorialmod.entity.custom;
 
 import net.kaupenjoe.tutorialmod.entity.ModEntities;
 import net.kaupenjoe.tutorialmod.entity.ai.*;
+import net.kaupenjoe.tutorialmod.entity.client.AnimalAIWanderRanged;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -16,7 +17,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.AbstractVillager;
@@ -32,7 +33,14 @@ import javax.annotation.Nonnull;
 
 import org.jetbrains.annotations.Nullable;
 
-public class ZooGoerEntity extends PathfinderMob { // Not extending AbstractVillager
+/**
+ * Should spawn from the zoo entrance block
+ * Wanders around for a while
+ * Counts up how many unique species it has seen
+ * Comes back to the block (nightfall, or after a while)
+ * At the block, deposits pay equal to RANDOM(num_species_seen), and despawns
+ */
+public class ZooGoerEntity extends PathfinderMob {
 
     public ZooGoerEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
@@ -65,7 +73,12 @@ public class ZooGoerEntity extends PathfinderMob { // Not extending AbstractVill
         // this.goalSelector.addGoal(1, new RandomStrollGoal(this, 1.0));
         var destination = new BlockPos(this.getBlockX() + 10, this.getBlockY(), this.getBlockZ() + 10);
         // this.goalSelector.addGoal(1, new MoveToGoal(this, 1.0, destination));
-        this.goalSelector.addGoal(1, new WalkForwardGoal(this, 50));
+        this.goalSelector.addGoal(0, new PanicGoal(this, 2.0));
+        this.goalSelector.addGoal(1, new AnimalAIWanderRanged(this, 100, 1.0, 25, 25));
+        this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, PathfinderMob.class, 10.0F));
+        //this.goalSelector.addGoal(1, new WalkForwardGoal(this, 50));
+        this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
+
         //this.goalSelector.addGoal(1, new WalkForwardGoal(this, 20));
 
         // this.goalSelector.addGoal(1, new BreedGoal(this, 1.15D));
