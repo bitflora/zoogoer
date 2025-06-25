@@ -7,12 +7,16 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.AABB;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class SpeciesCounterGoal extends Goal {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpeciesCounterGoal.class);
+
     private final Mob mob;
     private final double detectionRange;
     private final int cooldownTicks;
@@ -89,7 +93,8 @@ public class SpeciesCounterGoal extends Goal {
         for (LivingEntity entity : nearbyMobs) {
             this.detectedSpecies.add(entity.getClass());
         }
-        System.out.println("Species seen: " + this.getSpeciesCount());
+
+        LOGGER.info("{} counted {} unique species nearby", this.mob.getName().getString(), this.getSpeciesCount());
     }
 
     private void selectRandomTargetToLookAt() {
