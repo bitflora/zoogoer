@@ -1,4 +1,4 @@
-package net.kaupenjoe.tutorialmod.entity.client;
+package net.kaupenjoe.tutorialmod.entity.ai;
 
 //https://github.com/AlexModGuy/AlexsMobs/blob/1.20/src/main/java/com/github/alexthe666/alexsmobs/entity/ai/AnimalAIWanderRanged.java
 

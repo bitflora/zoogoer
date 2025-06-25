@@ -2,7 +2,6 @@ package net.kaupenjoe.tutorialmod.entity.custom;
 
 import net.kaupenjoe.tutorialmod.entity.ModEntities;
 import net.kaupenjoe.tutorialmod.entity.ai.*;
-import net.kaupenjoe.tutorialmod.entity.client.AnimalAIWanderRanged;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -41,6 +40,11 @@ import org.jetbrains.annotations.Nullable;
  * At the block, deposits pay equal to RANDOM(num_species_seen), and despawns
  */
 public class ZooGoerEntity extends PathfinderMob {
+    private BlockPos origin;
+
+    public BlockPos getOrigin() {
+        return origin;
+    }
 
     public ZooGoerEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
@@ -55,7 +59,7 @@ public class ZooGoerEntity extends PathfinderMob {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Animal.createLivingAttributes()
-                .add(Attributes.MAX_HEALTH, 20D)
+                .add(Attributes.MAX_HEALTH, 10D)
                 .add(Attributes.FOLLOW_RANGE, 24D)
                 .add(Attributes.MOVEMENT_SPEED, 0.25D)
                 .add(Attributes.ARMOR_TOUGHNESS, 0.1f)
@@ -65,19 +69,21 @@ public class ZooGoerEntity extends PathfinderMob {
 
     @Override
     protected void registerGoals() {
+        this.origin = new BlockPos(this.getBlockX(), this.getBlockY(), this.getBlockZ());
+
+        final float LOOK_RANGE = 10.0F;
+        int priority = 0;
         // Only add the AI goals you actually want
         // this.goalSelector.addGoal(0, new FloatGoal(this));
 
         // this.goalSelector.addGoal(1, new RhinoAttackGoal(this, 1.0D, true));
 
         // this.goalSelector.addGoal(1, new RandomStrollGoal(this, 1.0));
-        var destination = new BlockPos(this.getBlockX() + 10, this.getBlockY(), this.getBlockZ() + 10);
-        // this.goalSelector.addGoal(1, new MoveToGoal(this, 1.0, destination));
-        this.goalSelector.addGoal(0, new PanicGoal(this, 2.0));
-        this.goalSelector.addGoal(1, new AnimalAIWanderRanged(this, 100, 1.0, 25, 25));
-        this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, PathfinderMob.class, 10.0F));
-        //this.goalSelector.addGoal(1, new WalkForwardGoal(this, 50));
-        this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(priority++, new PanicGoal(this, 2.0));
+        this.goalSelector.addGoal(priority++, new SpeciesCounterGoal(this, LOOK_RANGE, 300));
+        this.goalSelector.addGoal(priority++, new AnimalAIWanderRanged(this, 100, 1.0, 25, 25));
+        // this.goalSelector.addGoal(priority++, new LookAtPlayerGoal(this, PathfinderMob.class, 10.0F));
+        // this.goalSelector.addGoal(priority++, new RandomLookAroundGoal(this));
 
         //this.goalSelector.addGoal(1, new WalkForwardGoal(this, 20));
 
