@@ -16,7 +16,7 @@ public class ModItems {
             DeferredRegister.create(ForgeRegistries.ITEMS, TutorialMod.MOD_ID);
 
     public static final RegistryObject<Item> ZOO_GOER_SPAWN_EGG = ITEMS.register("zoo_goer_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntities.ZOO_GOER, 0x7e9680, 0xc5d1c5, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(ModEntities.ZOO_GOER, 0xff0000, 0xffff00, new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
