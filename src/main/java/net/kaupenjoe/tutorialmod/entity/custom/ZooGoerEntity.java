@@ -39,14 +39,14 @@ import org.jetbrains.annotations.Nullable;
  * Comes back to the block (nightfall, or after a while)
  * At the block, deposits pay equal to RANDOM(num_species_seen), and despawns
  */
-public class ZooGoerEntity extends PathfinderMob {
+public class ZooGoerEntity extends AbstractVillager {
     private BlockPos origin;
 
     public BlockPos getOrigin() {
         return origin;
     }
 
-    public ZooGoerEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
+    public ZooGoerEntity(EntityType<? extends AbstractVillager> entityType, Level level) {
         super(entityType, level);
         this.refreshDimensions();
     }
@@ -97,6 +97,23 @@ public class ZooGoerEntity extends PathfinderMob {
         // this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
 
         // this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+    }
+
+    @Override
+    protected void rewardTradeXp(MerchantOffer pOffer) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    protected void updateTrades() {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    @javax.annotation.Nullable
+    public AgeableMob getBreedOffspring(ServerLevel pLevel, AgeableMob pOtherParent) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     // Then use VillagerModel in your renderer without inheriting villager behaviors
