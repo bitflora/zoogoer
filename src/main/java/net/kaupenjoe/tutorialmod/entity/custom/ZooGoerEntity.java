@@ -46,7 +46,9 @@ public class ZooGoerEntity extends AbstractVillager {
     private BlockPos origin;
 
     public void setOrigin(BlockPos origin) {
+        LOGGER.info("** origin set: {}", origin);
         this.origin = origin;
+        this.goalSelector.addGoal(1, new ReturnAndDepositGoal(this, this.origin, 1.0));
     }
 
     @Nullable
@@ -56,11 +58,10 @@ public class ZooGoerEntity extends AbstractVillager {
 
     public ZooGoerEntity(EntityType<? extends AbstractVillager> entityType, Level level) {
         super(entityType, level);
-        // this(entityType, level, null);
         this.refreshDimensions();
     }
 
-    // public ZooGoerEntity(EntityType<? extends AbstractVillager> entityType, Level level, @Nullable BlockPos origin) {
+    // public ZooGoerEntity(@Nullable BlockPos origin, EntityType<? extends AbstractVillager> entityType, Level level) {
     //     super(entityType, level);
     //     this.origin = origin;
     //     this.refreshDimensions();
@@ -86,19 +87,17 @@ public class ZooGoerEntity extends AbstractVillager {
     protected void registerGoals() {
         final float LOOK_RANGE = 10.0F;
         int priority = 0;
+
         // Only add the AI goals you actually want
         // this.goalSelector.addGoal(0, new FloatGoal(this));
 
         // this.goalSelector.addGoal(1, new RhinoAttackGoal(this, 1.0D, true));
 
         // this.goalSelector.addGoal(1, new RandomStrollGoal(this, 1.0));
-        this.goalSelector.addGoal(priority++, new PanicGoal(this, 2.0));
-        if (this.origin != null) {
-            LOGGER.info("*** I know where I came from: {}", this.origin);
-            this.goalSelector.addGoal(priority++, new ReturnAndDepositGoal(this, this.origin, 1.0));
-        }
-        this.goalSelector.addGoal(priority++, new SpeciesCounterGoal(this, LOOK_RANGE, 300));
-        this.goalSelector.addGoal(priority++, new AnimalAIWanderRanged(this, 100, 1.0, 25, 25));
+        this.goalSelector.addGoal(0, new PanicGoal(this, 2.0));
+
+        this.goalSelector.addGoal(2, new SpeciesCounterGoal(this, LOOK_RANGE, 300));
+        this.goalSelector.addGoal(3, new AnimalAIWanderRanged(this, 100, 1.0, 25, 25));
         // this.goalSelector.addGoal(priority++, new LookAtPlayerGoal(this, PathfinderMob.class, 10.0F));
         // this.goalSelector.addGoal(priority++, new RandomLookAroundGoal(this));
 
