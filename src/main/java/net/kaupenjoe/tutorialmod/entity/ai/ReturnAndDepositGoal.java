@@ -26,8 +26,6 @@ public class ReturnAndDepositGoal extends Goal {
     private final PathfinderMob mob;
     private final BlockPos targetBlock;
     private final double speedModifier;
-    private int depositCooldown = 0;
-    private boolean hasDeposited = false;
 
     public ReturnAndDepositGoal(PathfinderMob mob, BlockPos targetBlock, double speedModifier) {
         this.mob = mob;
@@ -46,20 +44,13 @@ public class ReturnAndDepositGoal extends Goal {
 
         // Only activate during night and if we haven't deposited yet today
         if (!isNight) {
-            this.hasDeposited = false; // Reset for next night
             return false;
         }
         LOGGER.info("Hark! It is night!");
 
-        // Don't activate if we already deposited tonight
-        if (this.hasDeposited) {
-            return false;
-        }
-
         // Check if target block still exists
-        boolean targetExists = level.getBlockState(targetBlock).getBlock() != net.minecraft.world.level.block.Blocks.AIR;
-        LOGGER.info("targetExists: {}", targetExists);
-        return targetExists;
+        // boolean targetExists = level.getBlockState(targetBlock).getBlock() != net.minecraft.world.level.block.Blocks.AIR;
+        return true;
     }
 
     @Override
@@ -68,20 +59,15 @@ public class ReturnAndDepositGoal extends Goal {
         long dayTime = level.getDayTime() % 24000;
         boolean isNight = dayTime >= 13000 && dayTime <= 23000;
 
-        return isNight && !this.hasDeposited && this.depositCooldown <= 0;
+        return isNight;
     }
 
     @Override
     public void start() {
-        this.depositCooldown = 0;
     }
 
     @Override
     public void tick() {
-        if (this.depositCooldown > 0) {
-            this.depositCooldown--;
-            return;
-        }
 
         double distanceToTarget = this.mob.distanceToSqr(
             targetBlock.getX() + 0.5,
@@ -92,6 +78,9 @@ public class ReturnAndDepositGoal extends Goal {
         // If we're close enough to the target block, try to deposit
         if (distanceToTarget <= 4.0) { // Within 2 block radius
             this.tryDeposit();
+
+            // Despawn the mob, even if there is no longer somewhere to deposit
+            this.mob.discard();
         } else {
             // Move towards the target block
             PathNavigation navigation = this.mob.getNavigation();
@@ -119,19 +108,12 @@ public class ReturnAndDepositGoal extends Goal {
                 ItemStack remainder = insertItems(itemHandler, emeralds);
 
                 if (remainder.getCount() < emeralds.getCount()) {
-                    // Successfully deposited at least some emeralds
-                    this.hasDeposited = true;
-                    this.depositCooldown = 100; // 5 second cooldown
-
-                    // Optional: Play a sound or particle effect
                     level.playSound(null, targetBlock,
                         net.minecraft.sounds.SoundEvents.VILLAGER_TRADE,
                         net.minecraft.sounds.SoundSource.BLOCKS,
                         0.5F, 1.0F);
 
 
-                    // Despawn the mob after successful deposit
-                    this.mob.discard();
                 }
             });
         }
@@ -150,11 +132,6 @@ public class ReturnAndDepositGoal extends Goal {
     @Override
     public void stop() {
         this.mob.getNavigation().stop();
-    }
-
-    // Getter methods for external access
-    public boolean hasDepositedTonight() {
-        return this.hasDeposited;
     }
 
     public BlockPos getTargetBlock() {

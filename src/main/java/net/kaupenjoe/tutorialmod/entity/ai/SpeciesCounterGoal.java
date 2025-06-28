@@ -1,6 +1,7 @@
 package net.kaupenjoe.tutorialmod.entity.ai;
 
 
+import net.kaupenjoe.tutorialmod.entity.custom.ZooGoerEntity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -17,20 +18,18 @@ import java.util.Set;
 public class SpeciesCounterGoal extends Goal {
     private static final Logger LOGGER = LoggerFactory.getLogger(SpeciesCounterGoal.class);
 
-    private final Mob mob;
+    private final ZooGoerEntity mob;
     private final double detectionRange;
     private final int cooldownTicks;
     private int ticksUntilNextCount;
     private LivingEntity currentTarget;
     private int lookTime;
-    private Set<Class<? extends LivingEntity>> detectedSpecies;
 
-    public SpeciesCounterGoal(Mob mob, double detectionRange, int cooldownTicks) {
+    public SpeciesCounterGoal(ZooGoerEntity mob, double detectionRange, int cooldownTicks) {
         this.mob = mob;
         this.detectionRange = detectionRange;
         this.cooldownTicks = cooldownTicks;
         this.ticksUntilNextCount = 0;
-        this.detectedSpecies = new HashSet<>();
     }
 
     @Override
@@ -91,13 +90,9 @@ public class SpeciesCounterGoal extends Goal {
         );
 
         for (LivingEntity entity : nearbyMobs) {
-            this.detectedSpecies.add(entity.getClass());
+            this.mob.noticeMob(entity);
         }
-
-        LOGGER.info("{} counted {} unique species nearby", this.mob.getName().getString(), this.getSpeciesCount());
-        for (var species : this.detectedSpecies) {
-            LOGGER.info("- {}", species.getName());
-        }
+        this.mob.debugNoticedMobs();
     }
 
     private void selectRandomTargetToLookAt() {
@@ -112,17 +107,4 @@ public class SpeciesCounterGoal extends Goal {
         }
     }
 
-
-    // Getter methods for other goals or systems to access the data
-    public int getSpeciesCount() {
-        return this.detectedSpecies.size();
-    }
-
-    public Set<Class<? extends LivingEntity>> getDetectedSpecies() {
-        return new HashSet<>(this.detectedSpecies);
-    }
-
-    public boolean hasDetectedSpecies(Class<? extends LivingEntity> speciesClass) {
-        return this.detectedSpecies.contains(speciesClass);
-    }
 }

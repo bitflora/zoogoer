@@ -2,10 +2,13 @@ package net.kaupenjoe.tutorialmod.entity.custom;
 
 import net.kaupenjoe.tutorialmod.entity.ModEntities;
 import net.kaupenjoe.tutorialmod.entity.ai.*;
+import net.kaupenjoe.tutorialmod.util.ModTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -27,6 +30,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 
@@ -44,9 +51,10 @@ import org.slf4j.LoggerFactory;
 public class ZooGoerEntity extends AbstractVillager {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractVillager.class);
     private BlockPos origin;
+    private Set<String> detectedSpecies = new HashSet<>();
+    // private Set<String> IGNORED_SPECIES = new HashSet<>();
 
     public void setOrigin(BlockPos origin) {
-        LOGGER.info("** origin set: {}", origin);
         this.origin = origin;
         this.goalSelector.addGoal(1, new ReturnAndDepositGoal(this, this.origin, 1.0));
     }
@@ -55,6 +63,26 @@ public class ZooGoerEntity extends AbstractVillager {
     public BlockPos getOrigin() {
         return this.origin;
     }
+
+    public void noticeMob(@Nonnull LivingEntity entity) {
+        ResourceLocation entityType = ForgeRegistries.ENTITY_TYPES.getKey(entity.getType());
+        String entityTypeName = entityType.toString();
+
+        if (!entity.getType().is(ModTags.Entities.ZOO_GOER_IGNORED_SPECIES)) {
+            this.detectedSpecies.add(entityTypeName);
+        } else {
+            LOGGER.info("BORING! {}", entityType);
+        }
+    }
+
+    public void debugNoticedMobs() {
+        LOGGER.info("{} counted {} unique species nearby", this.getName().getString(), this.detectedSpecies.size());
+        for (var species : this.detectedSpecies) {
+            LOGGER.info("- {}", species);
+        }
+    }
+
+
 
     public ZooGoerEntity(EntityType<? extends AbstractVillager> entityType, Level level) {
         super(entityType, level);
