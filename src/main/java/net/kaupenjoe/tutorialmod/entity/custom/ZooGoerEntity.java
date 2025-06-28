@@ -31,6 +31,8 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nonnull;
 
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Should spawn from the zoo entrance block
@@ -40,16 +42,29 @@ import org.jetbrains.annotations.Nullable;
  * At the block, deposits pay equal to RANDOM(num_species_seen), and despawns
  */
 public class ZooGoerEntity extends AbstractVillager {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractVillager.class);
     private BlockPos origin;
 
+    public void setOrigin(BlockPos origin) {
+        this.origin = origin;
+    }
+
+    @Nullable
     public BlockPos getOrigin() {
-        return origin;
+        return this.origin;
     }
 
     public ZooGoerEntity(EntityType<? extends AbstractVillager> entityType, Level level) {
         super(entityType, level);
+        // this(entityType, level, null);
         this.refreshDimensions();
     }
+
+    // public ZooGoerEntity(EntityType<? extends AbstractVillager> entityType, Level level, @Nullable BlockPos origin) {
+    //     super(entityType, level);
+    //     this.origin = origin;
+    //     this.refreshDimensions();
+    // }
 
     @Override
     public EntityDimensions getDimensions(@Nonnull Pose pose ) {
@@ -69,8 +84,6 @@ public class ZooGoerEntity extends AbstractVillager {
 
     @Override
     protected void registerGoals() {
-        this.origin = new BlockPos(this.getBlockX(), this.getBlockY(), this.getBlockZ());
-
         final float LOOK_RANGE = 10.0F;
         int priority = 0;
         // Only add the AI goals you actually want
@@ -80,6 +93,10 @@ public class ZooGoerEntity extends AbstractVillager {
 
         // this.goalSelector.addGoal(1, new RandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(priority++, new PanicGoal(this, 2.0));
+        if (this.origin != null) {
+            LOGGER.info("*** I know where I came from: {}", this.origin);
+            this.goalSelector.addGoal(priority++, new ReturnAndDepositGoal(this, this.origin, 1.0));
+        }
         this.goalSelector.addGoal(priority++, new SpeciesCounterGoal(this, LOOK_RANGE, 300));
         this.goalSelector.addGoal(priority++, new AnimalAIWanderRanged(this, 100, 1.0, 25, 25));
         // this.goalSelector.addGoal(priority++, new LookAtPlayerGoal(this, PathfinderMob.class, 10.0F));
@@ -101,22 +118,35 @@ public class ZooGoerEntity extends AbstractVillager {
 
     @Override
     protected void rewardTradeXp(MerchantOffer pOffer) {
-        // TODO Auto-generated method stub
     }
 
     @Override
     protected void updateTrades() {
-        // TODO Auto-generated method stub
     }
 
     @Override
     @javax.annotation.Nullable
     public AgeableMob getBreedOffspring(ServerLevel pLevel, AgeableMob pOtherParent) {
-        // TODO Auto-generated method stub
         return null;
     }
 
-    // Then use VillagerModel in your renderer without inheriting villager behaviors
+    @Nullable
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return SoundEvents.VILLAGER_AMBIENT;
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+        return SoundEvents.VILLAGER_HURT;
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.VILLAGER_DEATH;
+    }
 }
 
 // public class RhinoEntity extends AbstractVillager {

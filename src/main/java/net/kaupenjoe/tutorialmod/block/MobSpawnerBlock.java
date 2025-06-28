@@ -54,7 +54,7 @@ public class MobSpawnerBlock extends BaseEntityBlock {
 
         // 5% chance to spawn mob each random tick
         if (random.nextFloat() < 0.05F) {
-            spawnWalkingMob(level, pos);
+            spawnZooGoer(level, pos);
         }
     }
 
@@ -63,7 +63,7 @@ public class MobSpawnerBlock extends BaseEntityBlock {
         return true;
     }
 
-    private void spawnWalkingMob(ServerLevel level, BlockPos spawnerPos) {
+    private void spawnZooGoer(ServerLevel level, BlockPos spawnerPos) {
         BlockPos spawnPos = spawnerPos.above();
 
         // Check if spawn position is valid
@@ -73,6 +73,7 @@ public class MobSpawnerBlock extends BaseEntityBlock {
 
         // Create and spawn custom walker entity
         ZooGoerEntity walker = new ZooGoerEntity(ModEntities.ZOO_GOER.get(), level);
+        walker.setOrigin(spawnerPos);
         walker.setPos(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5);
         walker.finalizeSpawn(level, level.getCurrentDifficultyAt(spawnPos), MobSpawnType.SPAWNER, null, null);
 

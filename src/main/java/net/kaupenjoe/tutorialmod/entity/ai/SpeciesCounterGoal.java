@@ -95,6 +95,9 @@ public class SpeciesCounterGoal extends Goal {
         }
 
         LOGGER.info("{} counted {} unique species nearby", this.mob.getName().getString(), this.getSpeciesCount());
+        for (var species : this.detectedSpecies) {
+            LOGGER.info("- {}", species.getName());
+        }
     }
 
     private void selectRandomTargetToLookAt() {
