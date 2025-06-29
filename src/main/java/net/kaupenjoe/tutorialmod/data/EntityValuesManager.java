@@ -14,6 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,9 +25,10 @@ import java.util.Map;
 public class EntityValuesManager extends SimpleJsonResourceReloadListener {
     private static final Logger LOGGER = LoggerFactory.getLogger(EntityValuesManager.class);
     private static final Gson GSON = new Gson();
-    private static EntityValuesManager INSTANCE;
+    private static EntityValuesManager INSTANCE = new EntityValuesManager();
 
     private Map<TagKey<EntityType<?>>, Integer> entityTagValues = new HashMap<>();
+    private Map<EntityType<?>, Integer> individualEntityValues = new HashMap<>();
 
     public EntityValuesManager() {
         super(GSON, "zoo_entity_values");
@@ -37,6 +39,7 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
     protected void apply(Map<ResourceLocation, JsonElement> resourceLocationJsonElementMap,
                         ResourceManager resourceManager, ProfilerFiller profilerFiller) {
         entityTagValues.clear();
+        individualEntityValues.clear();
 
         for (Map.Entry<ResourceLocation, JsonElement> entry : resourceLocationJsonElementMap.entrySet()) {
             ResourceLocation resourceLocation = entry.getKey();
@@ -47,16 +50,33 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
                     JsonObject jsonObject = jsonElement.getAsJsonObject();
 
                     for (Map.Entry<String, JsonElement> valueEntry : jsonObject.entrySet()) {
-                        String tagName = valueEntry.getKey();
+                        String identifier = valueEntry.getKey();
                         JsonElement valueElement = valueEntry.getValue();
 
                         if (valueElement.isJsonPrimitive() && valueElement.getAsJsonPrimitive().isNumber()) {
-                            ResourceLocation tagLocation = new ResourceLocation(tagName);
-                            TagKey<EntityType<?>> tagKey = TagKey.create(Registries.ENTITY_TYPE, tagLocation);
                             int value = valueElement.getAsInt();
 
-                            entityTagValues.put(tagKey, value);
-                            LOGGER.debug("Added entity tag value: {} = {}", tagName, value);
+                            // Check if it's a tag (starts with #) or individual entity
+                            if (identifier.startsWith("#")) {
+                                // It's a tag reference
+                                String tagName = identifier.substring(1); // Remove the #
+                                ResourceLocation tagLocation = new ResourceLocation(tagName);
+                                TagKey<EntityType<?>> tagKey = TagKey.create(Registries.ENTITY_TYPE, tagLocation);
+
+                                entityTagValues.put(tagKey, value);
+                                LOGGER.debug("Added entity tag value: {} = {}", tagName, value);
+                            } else {
+                                // It's an individual entity type
+                                ResourceLocation entityLocation = new ResourceLocation(identifier);
+                                EntityType<?> entityType = ForgeRegistries.ENTITY_TYPES.getValue(entityLocation);
+
+                                if (entityType != null) {
+                                    individualEntityValues.put(entityType, value);
+                                    LOGGER.debug("Added individual entity value: {} = {}", identifier, value);
+                                } else {
+                                    LOGGER.warn("Unknown entity type: {}", identifier);
+                                }
+                            }
                         }
                     }
                 }
@@ -65,22 +85,45 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
             }
         }
 
-        LOGGER.info("Loaded {} entity tag values from datapacks", entityTagValues.size());
+        LOGGER.info("Loaded {} entity tag values and {} individual entity values from datapacks",
+                   entityTagValues.size(), individualEntityValues.size());
     }
 
     /**
-     * Get the value for an entity based on its tags
-     * Returns the first matching tag's value, or defaultValue if no tags match
+     * Get the value for an entity based on its tags and individual type
+     * Individual entity types take priority over tags
+     * Returns the first matching value, or defaultValue if no matches found
      */
     public static int getEntityValue(LivingEntity entity, int defaultValue) {
         if (INSTANCE == null) return defaultValue;
 
+        EntityType<?> entityType = entity.getType();
+
+        // Debug logging
+        ResourceLocation entityId = ForgeRegistries.ENTITY_TYPES.getKey(entityType);
+        LOGGER.debug("Checking entity: {} (type: {})", entity.getClass().getSimpleName(), entityId);
+
+        // First check individual entity values (higher priority)
+        if (INSTANCE.individualEntityValues.containsKey(entityType)) {
+            int value = INSTANCE.individualEntityValues.get(entityType);
+            LOGGER.debug("  Found individual entity value: {}", value);
+            return value;
+        }
+
+        // Then check tag values
         for (Map.Entry<TagKey<EntityType<?>>, Integer> entry : INSTANCE.entityTagValues.entrySet()) {
-            if (entity.getType().is(entry.getKey())) {
-                return entry.getValue();
+            TagKey<EntityType<?>> tag = entry.getKey();
+            boolean hasTag = entityType.is(tag);
+            LOGGER.debug("  Tag {} - matches: {}", tag.location(), hasTag);
+
+            if (hasTag) {
+                int value = entry.getValue();
+                LOGGER.debug("  Found matching tag! Returning value: {}", value);
+                return value;
             }
         }
 
+        LOGGER.debug("  No matching values found, returning default: {}", defaultValue);
         return defaultValue;
     }
 

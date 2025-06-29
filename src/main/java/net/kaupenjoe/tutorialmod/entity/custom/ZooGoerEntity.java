@@ -53,7 +53,6 @@ public class ZooGoerEntity extends AbstractVillager {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractVillager.class);
     private BlockPos origin;
     private Set<String> detectedSpecies = new HashSet<>();
-    // private Set<String> IGNORED_SPECIES = new HashSet<>();
 
     public void setOrigin(BlockPos origin) {
         this.origin = origin;
