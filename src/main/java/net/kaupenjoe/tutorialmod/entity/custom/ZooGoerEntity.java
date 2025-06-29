@@ -1,5 +1,6 @@
 package net.kaupenjoe.tutorialmod.entity.custom;
 
+import net.kaupenjoe.tutorialmod.data.EntityValuesManager;
 import net.kaupenjoe.tutorialmod.entity.ModEntities;
 import net.kaupenjoe.tutorialmod.entity.ai.*;
 import net.kaupenjoe.tutorialmod.util.ModTags;
@@ -69,7 +70,10 @@ public class ZooGoerEntity extends AbstractVillager {
         String entityTypeName = entityType.toString();
 
         if (!entity.getType().is(ModTags.Entities.ZOO_GOER_IGNORED_SPECIES)) {
-            this.detectedSpecies.add(entityTypeName);
+            if (this.detectedSpecies.add(entityTypeName)) {
+                int value = EntityValuesManager.getEntityValue(entity, 1);
+                LOGGER.info("Saw {} which is worth {}", entityTypeName, value);
+            }
         } else {
             LOGGER.info("BORING! {}", entityType);
         }

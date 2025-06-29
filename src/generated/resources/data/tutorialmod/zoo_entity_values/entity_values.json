@@ -1,0 +1,11 @@
+{
+  "forge:animals": 5,
+  "minecraft:axolotl_hunt_targets": 7,
+  "minecraft:aquatic": 7,
+  "minecraft:arthropod": 2,
+  "minecraft:undead": 8,
+  "minecraft:raiders": 12,
+  "minecraft:skeletons": 6,
+  "tutorialmod:rare_animals": 15,
+  "tutorialmod:common_animals": 1
+}

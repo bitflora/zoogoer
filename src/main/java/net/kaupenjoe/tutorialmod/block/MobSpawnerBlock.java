@@ -52,8 +52,8 @@ public class MobSpawnerBlock extends BaseEntityBlock {
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         super.randomTick(state, level, pos, random);
 
-        // 5% chance to spawn mob each random tick
-        if (random.nextFloat() < 0.05F) {
+        // 10% chance to spawn mob each random tick
+        if (random.nextFloat() < 0.1F) {
             spawnZooGoer(level, pos);
         }
     }
