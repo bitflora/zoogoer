@@ -14,9 +14,9 @@ public class ModBlockEntities {
 
 
 
-    public static final RegistryObject<BlockEntityType<MobSpawnerBlockEntity>> MOB_SPAWNER_BLOCK_ENTITY =
+    public static final RegistryObject<BlockEntityType<ZooDonationBucketBlockEntity>> MOB_SPAWNER_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("mob_spawner_block_entity", () ->
-                    BlockEntityType.Builder.of(MobSpawnerBlockEntity::new,
+                    BlockEntityType.Builder.of(ZooDonationBucketBlockEntity::new,
                             TutorialMod.MOB_SPAWNER_BLOCK.get()).build(null));
 
 

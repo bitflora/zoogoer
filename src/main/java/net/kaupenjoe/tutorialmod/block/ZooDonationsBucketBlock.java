@@ -1,12 +1,11 @@
 
-// File: src/main/java/com/example/mobspawnermod/blocks/MobSpawnerBlock.java
 package net.kaupenjoe.tutorialmod.block;
 
 
 import javax.annotation.Nonnull;
 
 import net.kaupenjoe.tutorialmod.TutorialMod;
-import net.kaupenjoe.tutorialmod.block.entity.MobSpawnerBlockEntity;
+import net.kaupenjoe.tutorialmod.block.entity.ZooDonationBucketBlockEntity;
 import net.kaupenjoe.tutorialmod.entity.ModEntities;
 import net.kaupenjoe.tutorialmod.entity.custom.ZooGoerEntity;
 import net.minecraft.core.BlockPos;
@@ -26,9 +25,9 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 
-public class MobSpawnerBlock extends BaseEntityBlock {
+public class ZooDonationsBucketBlock extends BaseEntityBlock {
 
-    public MobSpawnerBlock() {
+    public ZooDonationsBucketBlock() {
         super(BlockBehaviour.Properties.of()
             .mapColor(MapColor.STONE)
             .strength(3.0F, 3.0F)
@@ -41,7 +40,7 @@ public class MobSpawnerBlock extends BaseEntityBlock {
                                Player player, InteractionHand hand, BlockHitResult hit) {
         if (!level.isClientSide()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof MobSpawnerBlockEntity spawnerEntity) {
+            if (blockEntity instanceof ZooDonationBucketBlockEntity spawnerEntity) {
                 NetworkHooks.openScreen((ServerPlayer) player, spawnerEntity, pos);
             }
         }
@@ -82,7 +81,7 @@ public class MobSpawnerBlock extends BaseEntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new MobSpawnerBlockEntity(pos, state);
+        return new ZooDonationBucketBlockEntity(pos, state);
     }
 
     @Override
@@ -94,7 +93,7 @@ public class MobSpawnerBlock extends BaseEntityBlock {
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof MobSpawnerBlockEntity spawnerEntity) {
+            if (blockEntity instanceof ZooDonationBucketBlockEntity spawnerEntity) {
                 // Drop items when block is broken
                 spawnerEntity.drops();
             }

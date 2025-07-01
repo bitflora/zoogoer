@@ -1,6 +1,6 @@
 - add sounds to zoo goer
 - change namespace
-- change MobSpawnerBlock to TicketBooth
+- change MobSpawnerBlock to ZooDonationBucket
 - make ZooGoers leave behind money and despawn when they are done
 - add specialist ZooGoers
 - add customization via datapacks

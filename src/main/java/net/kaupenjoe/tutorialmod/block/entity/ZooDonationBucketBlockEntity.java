@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.stream.IntStream;
 
-public class MobSpawnerBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer {
+public class ZooDonationBucketBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer {
     private static final int INVENTORY_SIZE = 27; // Same as chest
     private final ItemStackHandler itemHandler = new ItemStackHandler(INVENTORY_SIZE) {
         @Override
@@ -39,7 +39,7 @@ public class MobSpawnerBlockEntity extends BaseContainerBlockEntity implements W
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
-    public MobSpawnerBlockEntity(BlockPos pos, BlockState state) {
+    public ZooDonationBucketBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.MOB_SPAWNER_BLOCK_ENTITY.get(), pos, state);
     }
 

@@ -2,7 +2,7 @@ package net.kaupenjoe.tutorialmod;
 
 import com.mojang.logging.LogUtils;
 
-import net.kaupenjoe.tutorialmod.block.MobSpawnerBlock;
+import net.kaupenjoe.tutorialmod.block.ZooDonationsBucketBlock;
 import net.kaupenjoe.tutorialmod.block.ModBlocks;
 import net.kaupenjoe.tutorialmod.block.entity.ModBlockEntities;
 import net.kaupenjoe.tutorialmod.entity.ModEntities;
@@ -55,9 +55,9 @@ public class TutorialMod {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, TutorialMod.MOD_ID);
 
-    public static final RegistryObject<Block> MOB_SPAWNER_BLOCK = BLOCKS.register("mob_spawner_block", MobSpawnerBlock::new);
-    public static final RegistryObject<Item> MOB_SPAWNER_BLOCK_ITEM = ITEMS.register("mob_spawner_block",
-        () -> new BlockItem(MOB_SPAWNER_BLOCK.get(), new Item.Properties()));
+    public static final RegistryObject<Block> ZOO_DONATIONS_BUCKET_BLOCK = BLOCKS.register("zoo_donations_bucket_block", ZooDonationsBucketBlock::new);
+    public static final RegistryObject<Item> ZOO_DONATIONS_BUCKET_BLOCK_ITEM = ITEMS.register("zoo_donations_bucket_block",
+        () -> new BlockItem(ZOO_DONATIONS_BUCKET_BLOCK.get(), new Item.Properties()));
 
     public TutorialMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
