@@ -34,6 +34,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -52,7 +53,9 @@ import org.slf4j.LoggerFactory;
 public class ZooGoerEntity extends AbstractVillager {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractVillager.class);
     private BlockPos origin;
-    private Set<String> detectedSpecies = new HashSet<>();
+    private Set<ResourceLocation> detectedSpecies = new HashSet<>();
+
+    double score = 0.0;
 
     public void setOrigin(BlockPos origin) {
         this.origin = origin;
@@ -66,12 +69,14 @@ public class ZooGoerEntity extends AbstractVillager {
 
     public void noticeMob(@Nonnull LivingEntity entity) {
         ResourceLocation entityType = ForgeRegistries.ENTITY_TYPES.getKey(entity.getType());
-        String entityTypeName = entityType.toString();
+        //String entityTypeName = entityType.toString();
 
         if (!entity.getType().is(ModTags.Entities.ZOO_GOER_IGNORED_SPECIES)) {
-            if (this.detectedSpecies.add(entityTypeName)) {
-                int value = EntityValuesManager.getEntityValue(entity, 1);
-                LOGGER.info("Saw {} which is worth {}", entityTypeName, value);
+            if (this.detectedSpecies.add(entityType)) {
+                double value = EntityValuesManager.getEntityValue(entity, 1);
+                score += value;
+                LOGGER.info("Saw {} which is worth {}", entityType, value);
+                LOGGER.info(" Score is now {}", score);
             }
         } else {
             LOGGER.info("BORING! {}", entityType);
@@ -83,6 +88,12 @@ public class ZooGoerEntity extends AbstractVillager {
         for (var species : this.detectedSpecies) {
             LOGGER.info("- {}", species);
         }
+    }
+
+    public int calculatePrimaryDonation() {
+        int limit = (int) Math.floor(this.score);
+        Random rng = new Random();
+        return rng.nextInt(limit);
     }
 
 

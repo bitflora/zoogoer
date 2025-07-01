@@ -29,8 +29,8 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
     private static final Gson GSON = new Gson();
     private static EntityValuesManager INSTANCE = new EntityValuesManager();
 
-    private Map<TagKey<EntityType<?>>, Integer> entityTagValues = new HashMap<>();
-    private Map<EntityType<?>, Integer> individualEntityValues = new HashMap<>();
+    private Map<TagKey<EntityType<?>>, Double> entityTagValues = new HashMap<>();
+    private Map<EntityType<?>, Double> individualEntityValues = new HashMap<>();
 
     public EntityValuesManager() {
         super(GSON, "zoo_entity_values");
@@ -56,7 +56,7 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
                         JsonElement valueElement = valueEntry.getValue();
 
                         if (valueElement.isJsonPrimitive() && valueElement.getAsJsonPrimitive().isNumber()) {
-                            int value = valueElement.getAsInt();
+                            var value = valueElement.getAsDouble();
 
                             // Check if it's a tag (starts with #) or individual entity
                             if (identifier.startsWith("#")) {
@@ -96,7 +96,7 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
      * Individual entity types take priority over tags
      * Returns the first matching value, or defaultValue if no matches found
      */
-    public static int getEntityValue(LivingEntity entity, int defaultValue) {
+    public static double getEntityValue(LivingEntity entity, int defaultValue) {
         if (INSTANCE == null) return defaultValue;
 
         EntityType<?> entityType = entity.getType();
@@ -107,19 +107,19 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
 
         // First check individual entity values (higher priority)
         if (INSTANCE.individualEntityValues.containsKey(entityType)) {
-            int value = INSTANCE.individualEntityValues.get(entityType);
+            var value = INSTANCE.individualEntityValues.get(entityType);
             LOGGER.debug("  Found individual entity value: {}", value);
             return value;
         }
 
         // Then check tag values
-        for (Map.Entry<TagKey<EntityType<?>>, Integer> entry : INSTANCE.entityTagValues.entrySet()) {
+        for (Map.Entry<TagKey<EntityType<?>>, Double> entry : INSTANCE.entityTagValues.entrySet()) {
             TagKey<EntityType<?>> tag = entry.getKey();
             boolean hasTag = entityType.is(tag);
             LOGGER.debug("  Tag {} - matches: {}", tag.location(), hasTag);
 
             if (hasTag) {
-                int value = entry.getValue();
+                var value = entry.getValue();
                 LOGGER.debug("  Found matching tag! Returning value: {}", value);
                 return value;
             }
@@ -132,7 +132,7 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
     /**
      * Get the value for a specific tag
      */
-    public static int getTagValue(TagKey<EntityType<?>> tag, int defaultValue) {
+    public static double getTagValue(TagKey<EntityType<?>> tag, double defaultValue) {
         if (INSTANCE == null) return defaultValue;
         return INSTANCE.entityTagValues.getOrDefault(tag, defaultValue);
     }
@@ -140,7 +140,7 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
     /**
      * Get all tag-value mappings (defensive copy)
      */
-    public static Map<TagKey<EntityType<?>>, Integer> getAllTagValues() {
+    public static Map<TagKey<EntityType<?>>, Double> getAllTagValues() {
         return INSTANCE != null ? new HashMap<>(INSTANCE.entityTagValues) : new HashMap<>();
     }
 

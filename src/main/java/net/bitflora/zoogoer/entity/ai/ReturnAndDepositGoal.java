@@ -1,5 +1,6 @@
 package net.bitflora.zoogoer.entity.ai;
 
+import net.bitflora.zoogoer.entity.custom.ZooGoerEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.PathfinderMob;
@@ -23,11 +24,11 @@ import org.slf4j.LoggerFactory;
 public class ReturnAndDepositGoal extends Goal {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReturnAndDepositGoal.class);
 
-    private final PathfinderMob mob;
+    private final ZooGoerEntity mob;
     private final BlockPos targetBlock;
     private final double speedModifier;
 
-    public ReturnAndDepositGoal(PathfinderMob mob, BlockPos targetBlock, double speedModifier) {
+    public ReturnAndDepositGoal(ZooGoerEntity mob, BlockPos targetBlock, double speedModifier) {
         this.mob = mob;
         this.targetBlock = targetBlock;
         this.speedModifier = speedModifier;
@@ -102,7 +103,7 @@ public class ReturnAndDepositGoal extends Goal {
         if (blockEntity != null) {
             // Try to get the item handler capability using the new 1.20.1 system
             blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(itemHandler -> {
-                ItemStack emeralds = new ItemStack(Items.EMERALD, 5);
+                ItemStack emeralds = new ItemStack(Items.EMERALD, this.mob.calculatePrimaryDonation());
 
                 // Try to insert the emeralds
                 ItemStack remainder = insertItems(itemHandler, emeralds);

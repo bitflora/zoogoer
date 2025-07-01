@@ -52,7 +52,7 @@ public class ZooDonationsBucketBlock extends BaseEntityBlock {
         super.randomTick(state, level, pos, random);
 
         // 10% chance to spawn mob each random tick
-        if (random.nextFloat() < 0.1F) {
+        if (random.nextFloat() < 0.1F && !level.isNight()) {
             spawnZooGoer(level, pos);
         }
     }
