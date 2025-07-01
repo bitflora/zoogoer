@@ -2,6 +2,8 @@
   "values": [
     "minecraft:player",
     "minecraft:villager",
+    "minecraft.iron_golem",
+    "minecraft:wandering_trader",
     "zoogoer:zoo_goer"
   ]
 }

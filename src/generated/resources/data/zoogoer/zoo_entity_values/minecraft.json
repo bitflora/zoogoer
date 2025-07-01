@@ -1,0 +1,17 @@
+{
+  "minecraft:sheep": 0.2,
+  "minecraft:cow": 0.2,
+  "minecraft:pig": 0.2,
+  "minecraft:chicken": 0.2,
+  "minecraft:horse": 0.3,
+  "minecraft:mule": 0.3,
+  "minecraft:donkey": 0.3,
+  "minecraft:wolf": 0.2,
+  "minecraft:cat": 0.2,
+
+  "minecraft:llama": 1,
+  "minecraft:frog": 1,
+  "minecraft:axolotl": 1,
+
+  "minecraft:mooshroom": 5
+}
