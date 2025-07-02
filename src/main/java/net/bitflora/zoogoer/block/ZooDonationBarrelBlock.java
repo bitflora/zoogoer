@@ -5,7 +5,7 @@ package net.bitflora.zoogoer.block;
 import javax.annotation.Nonnull;
 
 import net.bitflora.zoogoer.ZooGoerMod;
-import net.bitflora.zoogoer.block.entity.ZooDonationBucketBlockEntity;
+import net.bitflora.zoogoer.block.entity.ZooDonationBarrelBlockEntity;
 import net.bitflora.zoogoer.entity.ModEntities;
 import net.bitflora.zoogoer.entity.custom.ZooGoerEntity;
 import net.minecraft.core.BlockPos;
@@ -25,9 +25,9 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 
-public class ZooDonationsBucketBlock extends BaseEntityBlock {
+public class ZooDonationBarrelBlock extends BaseEntityBlock {
 
-    public ZooDonationsBucketBlock() {
+    public ZooDonationBarrelBlock() {
         super(BlockBehaviour.Properties.of()
             .mapColor(MapColor.STONE)
             .strength(3.0F, 3.0F)
@@ -40,7 +40,7 @@ public class ZooDonationsBucketBlock extends BaseEntityBlock {
                                Player player, InteractionHand hand, BlockHitResult hit) {
         if (!level.isClientSide()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof ZooDonationBucketBlockEntity spawnerEntity) {
+            if (blockEntity instanceof ZooDonationBarrelBlockEntity spawnerEntity) {
                 NetworkHooks.openScreen((ServerPlayer) player, spawnerEntity, pos);
             }
         }
@@ -81,7 +81,7 @@ public class ZooDonationsBucketBlock extends BaseEntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new ZooDonationBucketBlockEntity(pos, state);
+        return new ZooDonationBarrelBlockEntity(pos, state);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class ZooDonationsBucketBlock extends BaseEntityBlock {
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof ZooDonationBucketBlockEntity spawnerEntity) {
+            if (blockEntity instanceof ZooDonationBarrelBlockEntity spawnerEntity) {
                 // Drop items when block is broken
                 spawnerEntity.drops();
             }

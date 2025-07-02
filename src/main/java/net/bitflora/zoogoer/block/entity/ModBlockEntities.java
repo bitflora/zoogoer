@@ -14,10 +14,10 @@ public class ModBlockEntities {
 
 
 
-    public static final RegistryObject<BlockEntityType<ZooDonationBucketBlockEntity>> MOB_SPAWNER_BLOCK_ENTITY =
-            BLOCK_ENTITIES.register("zoo_donations_bucket_block_entity", () ->
-                    BlockEntityType.Builder.of(ZooDonationBucketBlockEntity::new,
-                            ZooGoerMod.ZOO_DONATIONS_BUCKET_BLOCK.get()).build(null));
+    public static final RegistryObject<BlockEntityType<ZooDonationBarrelBlockEntity>> MOB_SPAWNER_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("zoo_donation_barrel_block_entity", () ->
+                    BlockEntityType.Builder.of(ZooDonationBarrelBlockEntity::new,
+                            ZooGoerMod.ZOO_DONATION_BARREL_BLOCK.get()).build(null));
 
 
     public static void register(IEventBus eventBus) {

@@ -3,7 +3,7 @@ package net.bitflora.zoogoer;
 import com.mojang.logging.LogUtils;
 
 import net.bitflora.zoogoer.block.ModBlocks;
-import net.bitflora.zoogoer.block.ZooDonationsBucketBlock;
+import net.bitflora.zoogoer.block.ZooDonationBarrelBlock;
 import net.bitflora.zoogoer.block.entity.ModBlockEntities;
 import net.bitflora.zoogoer.entity.ModEntities;
 import net.bitflora.zoogoer.entity.client.ZooGoerRenderer;
@@ -55,9 +55,9 @@ public class ZooGoerMod {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, ZooGoerMod.MOD_ID);
 
-    public static final RegistryObject<Block> ZOO_DONATIONS_BUCKET_BLOCK = BLOCKS.register("zoo_donations_bucket_block", ZooDonationsBucketBlock::new);
-    public static final RegistryObject<Item> ZOO_DONATIONS_BUCKET_BLOCK_ITEM = ITEMS.register("zoo_donations_bucket_block",
-        () -> new BlockItem(ZOO_DONATIONS_BUCKET_BLOCK.get(), new Item.Properties()));
+    public static final RegistryObject<Block> ZOO_DONATION_BARREL_BLOCK = BLOCKS.register("zoo_donation_barrel_block", ZooDonationBarrelBlock::new);
+    public static final RegistryObject<Item> ZOO_DONATION_BARREL_BLOCK_ITEM = ITEMS.register("zoo_donation_barrel_block",
+        () -> new BlockItem(ZOO_DONATION_BARREL_BLOCK.get(), new Item.Properties()));
 
     public ZooGoerMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -88,7 +88,7 @@ public class ZooGoerMod {
         if(event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
         }
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-            event.accept(ZOO_DONATIONS_BUCKET_BLOCK_ITEM);
+            event.accept(ZOO_DONATION_BARREL_BLOCK_ITEM);
         }
     }
 

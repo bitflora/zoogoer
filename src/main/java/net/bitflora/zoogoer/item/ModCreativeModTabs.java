@@ -20,7 +20,7 @@ public class ModCreativeModTabs {
                     .title(Component.translatable("creativetab.zoogoer_tab"))
                     .displayItems((pParameters, pOutput) -> {
                         pOutput.accept(ModItems.ZOO_GOER_SPAWN_EGG.get());
-
+                        pOutput.accept(ZooGoerMod.ZOO_DONATION_BARREL_BLOCK_ITEM.get());
 
                     })
                     .build());
