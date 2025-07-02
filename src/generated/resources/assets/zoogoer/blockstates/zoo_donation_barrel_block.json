@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "yourmod:block/zoo_donation_barrel_block"
+      "model": "zoogoer:block/zoo_donation_barrel_block"
     }
   }
 }
