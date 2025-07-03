@@ -12,7 +12,6 @@ import net.bitflora.zoogoer.item.ModItems;
 import net.bitflora.zoogoer.loot.ModLootModifiers;
 import net.bitflora.zoogoer.recipe.ModRecipes;
 import net.bitflora.zoogoer.sound.ModSounds;
-import net.bitflora.zoogoer.util.ModWoodTypes;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -103,7 +102,6 @@ public class ZooGoerMod {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            Sheets.addWoodType(ModWoodTypes.PINE);
 
             EntityRenderers.register(ModEntities.ZOO_GOER.get(), ZooGoerRenderer::new);
             EntityRenderers.register(ModEntities.FISH_LOVER.get(), FishLoverRenderer::new);

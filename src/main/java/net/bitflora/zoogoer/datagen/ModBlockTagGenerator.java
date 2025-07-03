@@ -21,8 +21,5 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
 
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .add( ModBlocks.SOUND_BLOCK.get());
-
     }
 }

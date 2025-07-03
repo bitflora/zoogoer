@@ -4,7 +4,6 @@ import net.bitflora.zoogoer.ZooGoerMod;
 import net.bitflora.zoogoer.block.custom.*;
 import net.bitflora.zoogoer.item.ModItems;
 import net.bitflora.zoogoer.sound.ModSounds;
-import net.bitflora.zoogoer.util.ModWoodTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -30,12 +29,6 @@ import java.util.function.Supplier;
 public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS =
             DeferredRegister.create(ForgeRegistries.BLOCKS, ZooGoerMod.MOD_ID);
-
-
-    public static final RegistryObject<Block> SOUND_BLOCK = registerBlock("sound_block",
-            () -> new SoundBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).sound(ModSounds.SOUND_BLOCK_SOUNDS)));
-
-
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
