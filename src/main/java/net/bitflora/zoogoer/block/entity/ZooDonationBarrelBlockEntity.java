@@ -131,7 +131,7 @@ public class ZooDonationBarrelBlockEntity extends BaseContainerBlockEntity imple
 
     @Override
     protected Component getDefaultName() {
-        return Component.translatable("container.mob_spawner");
+        return Component.translatable("block.zoogoer.zoo_donation_barrel_block");
     }
 
     @Override
