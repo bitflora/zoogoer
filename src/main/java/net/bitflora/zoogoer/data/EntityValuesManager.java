@@ -67,6 +67,7 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
 
                                 entityTagValues.put(tagKey, value);
                                 LOGGER.debug("Added entity tag value: {} = {}", tagName, value);
+                            // TODO: suport namespaces here
                             } else {
                                 // It's an individual entity type
                                 ResourceLocation entityLocation = new ResourceLocation(identifier);

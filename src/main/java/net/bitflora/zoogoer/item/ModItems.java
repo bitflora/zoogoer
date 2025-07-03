@@ -18,6 +18,10 @@ public class ModItems {
     public static final RegistryObject<Item> ZOO_GOER_SPAWN_EGG = ITEMS.register("zoo_goer_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.ZOO_GOER, 0xff0000, 0xffff00, new Item.Properties()));
 
+
+    public static final RegistryObject<Item> FISH_LOVER_SPAWN_EGG = ITEMS.register("fish_lover_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.FISH_LOVER, 0x00ff00, 0x00ff00, new Item.Properties()));
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

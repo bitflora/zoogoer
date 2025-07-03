@@ -6,7 +6,7 @@ import net.bitflora.zoogoer.block.ModBlocks;
 import net.bitflora.zoogoer.block.ZooDonationBarrelBlock;
 import net.bitflora.zoogoer.block.entity.ModBlockEntities;
 import net.bitflora.zoogoer.entity.ModEntities;
-import net.bitflora.zoogoer.entity.client.ZooGoerRenderer;
+import net.bitflora.zoogoer.entity.client.*;
 import net.bitflora.zoogoer.item.ModCreativeModTabs;
 import net.bitflora.zoogoer.item.ModItems;
 import net.bitflora.zoogoer.loot.ModLootModifiers;
@@ -106,6 +106,7 @@ public class ZooGoerMod {
             Sheets.addWoodType(ModWoodTypes.PINE);
 
             EntityRenderers.register(ModEntities.ZOO_GOER.get(), ZooGoerRenderer::new);
+            EntityRenderers.register(ModEntities.FISH_LOVER.get(), FishLoverRenderer::new);
 
         }
     }

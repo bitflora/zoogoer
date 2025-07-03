@@ -16,10 +16,11 @@ public class ModCreativeModTabs {
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, ZooGoerMod.MOD_ID);
 
     public static final RegistryObject<CreativeModeTab> ZOOGOER_TAB = CREATIVE_MODE_TABS.register("zoogoer_tab",
-            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModItems.ZOO_GOER_SPAWN_EGG.get()))
+            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ZooGoerMod.ZOO_DONATION_BARREL_BLOCK_ITEM.get()))
                     .title(Component.translatable("creativetab.zoogoer_tab"))
                     .displayItems((pParameters, pOutput) -> {
                         pOutput.accept(ModItems.ZOO_GOER_SPAWN_EGG.get());
+                        pOutput.accept(ModItems.FISH_LOVER_SPAWN_EGG.get());
                         pOutput.accept(ZooGoerMod.ZOO_DONATION_BARREL_BLOCK_ITEM.get());
 
                     })
