@@ -1,6 +1,5 @@
-- add sounds to zoo goer
-- change namespace
-- change MobSpawnerBlock to ZooDonationBucket
-- make ZooGoers leave behind money and despawn when they are done
+- add animal score support for whole mods
 - add specialist ZooGoers
-- add customization via datapacks
+    - give them bonus drops
+    - herp fan
+    - monster watcher
