@@ -21,7 +21,13 @@ public class ModEntities {
         ENTITY_TYPES.register("fish_lover", () -> EntityType.Builder.of(FishLoverEntity::new, MobCategory.CREATURE)
                 .sized(2.5f, 2.5f).build("fish_lover"));
 
+    public static final RegistryObject<EntityType<HerpFanEntity>> HERP_FAN =
+        ENTITY_TYPES.register("herp_fan", () -> EntityType.Builder.of(HerpFanEntity::new, MobCategory.CREATURE)
+                .sized(2.5f, 2.5f).build("herp_fan"));
 
+    public static final RegistryObject<EntityType<MonsterWatcherEntity>> MONSTER_WATCHER =
+        ENTITY_TYPES.register("monster_watcher", () -> EntityType.Builder.of(MonsterWatcherEntity::new, MobCategory.CREATURE)
+                .sized(2.5f, 2.5f).build("monster_watcher"));
 
 
     public static void register(IEventBus eventBus) {

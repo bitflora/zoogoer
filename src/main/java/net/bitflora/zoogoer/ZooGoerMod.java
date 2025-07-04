@@ -105,6 +105,8 @@ public class ZooGoerMod {
 
             EntityRenderers.register(ModEntities.ZOO_GOER.get(), ZooGoerRenderer::new);
             EntityRenderers.register(ModEntities.FISH_LOVER.get(), FishLoverRenderer::new);
+            EntityRenderers.register(ModEntities.HERP_FAN.get(), HerpFanRenderer::new);
+            EntityRenderers.register(ModEntities.MONSTER_WATCHER.get(), MonsterWatcherRenderer::new);
 
         }
     }
