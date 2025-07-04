@@ -1,4 +1,7 @@
 {
+  "block.zoogoer.fish_donation_barrel_block": "Fish Donation Barrel",
+  "block.zoogoer.herp_donation_barrel_block": "Herp Donation Barrel",
+  "block.zoogoer.monster_donation_barrel_block": "Monster Donation Barrel",
   "block.zoogoer.zoo_donation_barrel_block": "Zoo Donation Barrel",
   "entity.zoogoer.fish_lover": "Fish Lover",
   "entity.zoogoer.herp_fan": "Herp Fan",

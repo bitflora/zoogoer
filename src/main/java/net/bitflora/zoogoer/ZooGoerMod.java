@@ -2,8 +2,7 @@ package net.bitflora.zoogoer;
 
 import com.mojang.logging.LogUtils;
 
-import net.bitflora.zoogoer.block.ModBlocks;
-import net.bitflora.zoogoer.block.ZooDonationBarrelBlock;
+import net.bitflora.zoogoer.block.*;
 import net.bitflora.zoogoer.block.entity.ModBlockEntities;
 import net.bitflora.zoogoer.entity.ModEntities;
 import net.bitflora.zoogoer.entity.client.*;
@@ -12,18 +11,11 @@ import net.bitflora.zoogoer.item.ModItems;
 import net.bitflora.zoogoer.loot.ModLootModifiers;
 import net.bitflora.zoogoer.recipe.ModRecipes;
 import net.bitflora.zoogoer.sound.ModSounds;
-import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FlowerPotBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -32,7 +24,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -57,6 +48,18 @@ public class ZooGoerMod {
     public static final RegistryObject<Block> ZOO_DONATION_BARREL_BLOCK = BLOCKS.register("zoo_donation_barrel_block", ZooDonationBarrelBlock::new);
     public static final RegistryObject<Item> ZOO_DONATION_BARREL_BLOCK_ITEM = ITEMS.register("zoo_donation_barrel_block",
         () -> new BlockItem(ZOO_DONATION_BARREL_BLOCK.get(), new Item.Properties()));
+
+    public static final RegistryObject<Block> FISH_DONATION_BARREL_BLOCK = BLOCKS.register("fish_donation_barrel_block", FishDonationBarrelBlock::new);
+    public static final RegistryObject<Item> FISH_DONATION_BARREL_BLOCK_ITEM = ITEMS.register("fish_donation_barrel_block",
+        () -> new BlockItem(FISH_DONATION_BARREL_BLOCK.get(), new Item.Properties()));
+
+    public static final RegistryObject<Block> HERP_DONATION_BARREL_BLOCK = BLOCKS.register("herp_donation_barrel_block", HerpDonationBarrelBlock::new);
+    public static final RegistryObject<Item> HERP_DONATION_BARREL_BLOCK_ITEM = ITEMS.register("herp_donation_barrel_block",
+        () -> new BlockItem(HERP_DONATION_BARREL_BLOCK.get(), new Item.Properties()));
+
+    public static final RegistryObject<Block> MONSTER_DONATION_BARREL_BLOCK = BLOCKS.register("monster_donation_barrel_block", MonsterDonationBarrelBlock::new);
+    public static final RegistryObject<Item> MONSTER_DONATION_BARREL_BLOCK_ITEM = ITEMS.register("monster_donation_barrel_block",
+        () -> new BlockItem(MONSTER_DONATION_BARREL_BLOCK.get(), new Item.Properties()));
 
     public ZooGoerMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

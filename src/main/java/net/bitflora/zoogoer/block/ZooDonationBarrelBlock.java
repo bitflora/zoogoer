@@ -4,7 +4,6 @@ package net.bitflora.zoogoer.block;
 
 import javax.annotation.Nonnull;
 
-import net.bitflora.zoogoer.ZooGoerMod;
 import net.bitflora.zoogoer.block.entity.ZooDonationBarrelBlockEntity;
 import net.bitflora.zoogoer.entity.ModEntities;
 import net.bitflora.zoogoer.entity.custom.ZooGoerEntity;
@@ -32,6 +31,10 @@ public class ZooDonationBarrelBlock extends BaseEntityBlock {
             .mapColor(MapColor.STONE)
             .strength(3.0F, 3.0F)
             .requiresCorrectToolForDrops());
+    }
+
+    protected ZooGoerEntity getEntityType(ServerLevel level) {
+        return new ZooGoerEntity(ModEntities.ZOO_GOER.get(), level);
     }
 
 
@@ -71,7 +74,7 @@ public class ZooDonationBarrelBlock extends BaseEntityBlock {
         }
 
         // Create and spawn custom walker entity
-        ZooGoerEntity walker = new ZooGoerEntity(ModEntities.ZOO_GOER.get(), level);
+        ZooGoerEntity walker = getEntityType(level);
         walker.setOrigin(spawnerPos);
         walker.setPos(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5);
         walker.finalizeSpawn(level, level.getCurrentDifficultyAt(spawnPos), MobSpawnType.SPAWNER, null, null);

@@ -23,6 +23,9 @@ public class ModCreativeModTabs {
                         pOutput.accept(ModItems.FISH_LOVER_SPAWN_EGG.get());
                         pOutput.accept(ModItems.HERP_FAN_SPAWN_EGG.get());
                         pOutput.accept(ModItems.MONSTER_WATCHER_SPAWN_EGG.get());
+                        pOutput.accept(ZooGoerMod.FISH_DONATION_BARREL_BLOCK_ITEM.get());
+                        pOutput.accept(ZooGoerMod.HERP_DONATION_BARREL_BLOCK_ITEM.get());
+                        pOutput.accept(ZooGoerMod.MONSTER_DONATION_BARREL_BLOCK_ITEM.get());
                         pOutput.accept(ZooGoerMod.ZOO_DONATION_BARREL_BLOCK_ITEM.get());
 
                     })

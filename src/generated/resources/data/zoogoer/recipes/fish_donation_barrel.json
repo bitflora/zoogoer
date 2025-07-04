@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "zoogoer:zoo_donation_barrel_block"
+    },
+    "E": {
+      "item": "minecraft:emerald"
+    },
+    "R": {
+      "item": "minecraft:blue_dye"
+    },
+    "X": {
+      "tag": "forge/raw_fishes"
+    }
+  },
+  "pattern": [
+    "RXR",
+    "RBR",
+    "RER"
+  ],
+  "result": {
+    "item": "zoogoer:fish_donation_barrel_block"
+  },
+  "show_notification": true
+}

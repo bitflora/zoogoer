@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "zoogoer:zoo_donation_barrel_block"
+    },
+    "E": {
+      "item": "minecraft:emerald"
+    },
+    "R": {
+      "item": "minecraft:black_dye"
+    },
+    "X": {
+      "item": "minecraft:rotten_flesh"
+    }
+  },
+  "pattern": [
+    "RXR",
+    "RBR",
+    "RER"
+  ],
+  "result": {
+    "item": "zoogoer:monster_donation_barrel_block"
+  },
+  "show_notification": true
+}

@@ -1,5 +1,4 @@
 - add animal score support for whole mods
 - add specialist ZooGoers
     - give them bonus drops
-    - herp fan
-    - monster watcher
+    - textures for other barrels
