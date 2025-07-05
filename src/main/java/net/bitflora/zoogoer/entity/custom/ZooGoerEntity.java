@@ -73,7 +73,7 @@ public class ZooGoerEntity extends AbstractVillager {
 
         if (!entity.getType().is(ModTags.Entities.ZOO_GOER_IGNORED_SPECIES)) {
             if (this.detectedSpecies.add(entityType)) {
-                double value = EntityValuesManager.getEntityValue(entity, 1);
+                double value = EntityValuesManager.BASE_VALUES.getEntityValue(entity, 1);
                 score += value;
                 LOGGER.info("Saw {} which is worth {}", entityType, value);
                 LOGGER.info(" Score is now {}", score);
