@@ -1,5 +1,3 @@
-- debug specialist values
-    - FishLover registered minecraft:tropical_fish correctly, but not zawa or aquaculture.
 - add specialist ZooGoers
     - give them bonus drops
 - more specialists
