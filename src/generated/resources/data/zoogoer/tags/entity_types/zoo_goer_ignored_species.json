@@ -4,6 +4,9 @@
     "minecraft:villager",
     "minecraft:iron_golem",
     "minecraft:wandering_trader",
-    "zoogoer:zoo_goer"
+    "zoogoer:zoo_goer",
+    "zoogoer:fish_lover",
+    "zoogoer:herp_fan",
+    "zoogoer:monster_watcher"
   ]
 }

@@ -1,4 +1,7 @@
-- add animal score support for whole mods
+- debug specialist values
+    - FishLover registered minecraft:tropical_fish correctly, but not zawa or aquaculture.
 - add specialist ZooGoers
     - give them bonus drops
-    - textures for other barrels
+- more specialists
+    - Netherists
+    - Endologists

@@ -1,0 +1,47 @@
+{
+  "#minecraft:undead": 3,
+  "#minecraft:zombies": 3,
+  "minecraft:drowned": 3.1,
+  "minecraft:husk": 3.1,
+  "minecraft:zoglin": 4,
+  "minecraft:zombie": 3,
+  "minecraft:zombified_piglin": 6,
+  "minecraft:zombie_villager": 4,
+
+  "minecraft:spider": 2,
+  "minecraft:cave_spider": 2.5,
+
+  "#minecraft:skeletons": 3,
+  "minecraft:skeleton": 3,
+  "minecraft:stray": 3.5,
+  "minecraft:bogged": 3.5,
+  "minecraft:creeper": 3,
+  "minecraft:enderman": 4,
+  "minecraft:endermite": 5,
+
+  "minecraft:witch": 4,
+  "#minecraft:illager": 6,
+  "minecraft:evoker": 6.5,
+  "minecraft:illusioner": 7,
+  "minecraft:pillager": 6,
+  "minecraft:vindicator": 6.1,
+  "minecraft:ravager": 6,
+
+  "minecraft:phantom": 7,
+  "minecraft:silverfish": 7,
+  "minecraft:slime": 4,
+  "minecraft:magma_cube": 6,
+  "minecraft:shulker": 10,
+  "minecraft:zombie_horse": 7,
+  "minecraft:skeleton_horse": 10,
+
+  "minecraft:guardian": 10,
+  "minecraft:elder_guardian": 15,
+  "minecraft:blaze": 10,
+  "minecraft:ghast": 15,
+  "minecraft:wither_skeleton": 10,
+
+  "minecraft:creaking": 20,
+  "minecraft:wither": 40,
+  "minecraft:warden": 40
+}

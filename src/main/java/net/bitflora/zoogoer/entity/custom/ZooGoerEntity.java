@@ -34,6 +34,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
@@ -67,15 +68,26 @@ public class ZooGoerEntity extends AbstractVillager {
         return this.origin;
     }
 
+    protected Optional<Double> getSpecialistValue(@Nonnull LivingEntity entity) {
+        return Optional.empty();
+    }
+
+    protected double getBaseModifier() {
+        return 1.0;
+    }
+
     public void noticeMob(@Nonnull LivingEntity entity) {
         ResourceLocation entityType = ForgeRegistries.ENTITY_TYPES.getKey(entity.getType());
         //String entityTypeName = entityType.toString();
 
         if (!entity.getType().is(ModTags.Entities.ZOO_GOER_IGNORED_SPECIES)) {
             if (this.detectedSpecies.add(entityType)) {
-                double value = EntityValuesManager.BASE_VALUES.getEntityValue(entity, 1);
+                var specialistValue = getSpecialistValue(entity);
+                var baseValue = EntityValuesManager.BASE_VALUES.getEntityValue(entity);
+                var baseModifier = getBaseModifier();
+                double value = specialistValue.orElse(baseValue.orElse(1.0) * baseModifier);
                 score += value;
-                LOGGER.info("Saw {} which is worth {}", entityType, value);
+                LOGGER.info("Saw {} which is worth specialist {}, base {}, actual {}", entityType, specialistValue, baseValue, value);
                 LOGGER.info(" Score is now {}", score);
             }
         } else {

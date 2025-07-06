@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = ZooGoerMod.MOD_ID)
 public class EntityValuesManager extends SimpleJsonResourceReloadListener {
@@ -30,9 +31,13 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
 
     private Map<TagKey<EntityType<?>>, Double> entityTagValues = new HashMap<>();
     private Map<EntityType<?>, Double> individualEntityValues = new HashMap<>();
+    private Map<String, Double> modValues = new HashMap<>();
 
 
     static public EntityValuesManager BASE_VALUES = new EntityValuesManager("animal_scores/base");
+    static public EntityValuesManager FISH_VALUES = new EntityValuesManager("animal_scores/fish_lover");
+    static public EntityValuesManager HERP_VALUES = new EntityValuesManager("animal_scores/herp_fan");
+    static public EntityValuesManager MONSTER_VALUES = new EntityValuesManager("animal_scores/monster_watcher");
 
     public EntityValuesManager(String pDirectory) {
         super(GSON, pDirectory);
@@ -68,7 +73,8 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
 
                                 entityTagValues.put(tagKey, value);
                                 LOGGER.debug("Added entity tag value: {} = {}", tagName, value);
-                            // TODO: suport namespaces here
+                            } if (identifier.endsWith(":")) {
+                                modValues.put(identifier, value);
                             } else {
                                 // It's an individual entity type
                                 ResourceLocation entityLocation = new ResourceLocation(identifier);
@@ -98,7 +104,7 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
      * Individual entity types take priority over tags
      * Returns the first matching value, or defaultValue if no matches found
      */
-    public double getEntityValue(LivingEntity entity, int defaultValue) {
+    public Optional<Double> getEntityValue(LivingEntity entity) {
 
         EntityType<?> entityType = entity.getType();
 
@@ -110,7 +116,7 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
         if (individualEntityValues.containsKey(entityType)) {
             var value = individualEntityValues.get(entityType);
             LOGGER.debug("  Found individual entity value: {}", value);
-            return value;
+            return Optional.of(value);
         }
 
         // Then check tag values
@@ -122,12 +128,19 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
             if (hasTag) {
                 var value = entry.getValue();
                 LOGGER.debug("  Found matching tag! Returning value: {}", value);
-                return value;
+                return Optional.of(value);
             }
         }
 
-        LOGGER.debug("  No matching values found, returning default: {}", defaultValue);
-        return defaultValue;
+        String modName = entityType.toString().split(":")[0] + ":";
+        if (modValues.containsKey(modName)) {
+            var value = modValues.get(modName);
+            LOGGER.debug("  Found mod entity value: {}", value);
+            return Optional.of(value);
+        }
+
+        LOGGER.debug("  No matching values found");
+        return Optional.empty();
     }
 
     /**
@@ -147,5 +160,8 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
     @SubscribeEvent
     public static void onAddReloadListeners(AddReloadListenerEvent event) {
         event.addListener(BASE_VALUES);
+        event.addListener(FISH_VALUES);
+        event.addListener(HERP_VALUES);
+        event.addListener(MONSTER_VALUES);
     }
 }

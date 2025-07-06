@@ -6,12 +6,15 @@
   "minecraft:horse": 0.3,
   "minecraft:mule": 0.3,
   "minecraft:donkey": 0.3,
+  "minecraft:rabbit": 0.6,
   "minecraft:wolf": 0.2,
   "minecraft:cat": 0.2,
 
   "minecraft:llama": 1,
   "minecraft:frog": 1,
-  "minecraft:axolotl": 1,
+  "minecraft:axolotl": 1.5,
+  "minecraft:slime": 8,
 
+  "minecraft:panda": 5,
   "minecraft:mooshroom": 5
 }

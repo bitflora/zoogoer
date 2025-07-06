@@ -1,0 +1,15 @@
+{
+    "#minecraft:aquatic": 2,
+    "minecraft:tropical_fish": 2.5,
+    "minecraft:cod" : 2,
+    "minecraft:pufferfish": 2,
+    "minecraft:salmon": 2,
+    "minecraft:squid": 2,
+    "minecraft:tadpole": 2,
+    "minecraft:turtle": 2,
+    "minecraft:axolotl": 2.5,
+    "minecraft:glow_squid": 3,
+    "minecraft:dolphin": 4,
+    "minecraft:guardian": 5,
+    "minecraft:elder_guardian": 10
+}
