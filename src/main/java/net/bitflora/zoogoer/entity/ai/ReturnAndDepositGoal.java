@@ -1,7 +1,10 @@
 package net.bitflora.zoogoer.entity.ai;
 
+import net.bitflora.zoogoer.ZooGoerMod;
 import net.bitflora.zoogoer.entity.custom.ZooGoerEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -13,10 +16,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 import java.util.EnumSet;
+import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,15 +115,35 @@ public class ReturnAndDepositGoal extends Goal {
                 ItemStack emeralds = new ItemStack(Items.EMERALD, this.mob.calculatePrimaryDonation());
 
                 // Try to insert the emeralds
-                ItemStack remainder = insertItems(itemHandler, emeralds);
+                if (emeralds.getCount() > 0) {
+                    ItemStack remainder = insertItems(itemHandler, emeralds);
 
-                if (remainder.getCount() < emeralds.getCount()) {
-                    level.playSound(null, targetBlock,
-                        net.minecraft.sounds.SoundEvents.VILLAGER_TRADE,
-                        net.minecraft.sounds.SoundSource.BLOCKS,
-                        0.5F, 1.0F);
+                    if (remainder.getCount() > 0) {
+                        level.playSound(null, targetBlock,
+                            net.minecraft.sounds.SoundEvents.VILLAGER_NO,
+                            net.minecraft.sounds.SoundSource.BLOCKS,
+                            0.5F, 1.0F);
+                    } else {
+                        level.playSound(null, targetBlock,
+                            net.minecraft.sounds.SoundEvents.VILLAGER_TRADE,
+                            net.minecraft.sounds.SoundSource.BLOCKS,
+                            0.5F, 1.0F);
+                    }
 
-
+                    // Deposit loot table items
+                    var lootTable = mob.getTipLootTable();
+                    if (lootTable.isPresent()) {
+                        LOGGER.info("Tip table found!");
+                        List<ItemStack> lootItems = generateLootTableItems(lootTable.get());
+                        for (ItemStack lootItem : lootItems) {
+                            ItemStack lootRemainder = insertItems(itemHandler, lootItem);
+                            // If you want to track what couldn't be inserted, you can handle lootRemainder here
+                            level.playSound(null, targetBlock,
+                                net.minecraft.sounds.SoundEvents.VILLAGER_YES,
+                                net.minecraft.sounds.SoundSource.BLOCKS,
+                                0.5F, 1.0F);
+                        }
+                    }
                 }
             });
         }
@@ -128,6 +157,28 @@ public class ReturnAndDepositGoal extends Goal {
         }
 
         return remaining;
+    }
+
+
+    protected List<ItemStack> generateLootTableItems(String tablePath) {
+        Level level = this.mob.level();
+
+        // Replace with your custom loot table resource location
+        ResourceLocation lootTableLocation = new ResourceLocation(ZooGoerMod.MOD_ID, tablePath);
+
+        // Get the loot table from the server's loot manager
+        LootTable lootTable = level.getServer().getLootData().getLootTable(lootTableLocation);
+
+        // Create loot context
+        LootParams.Builder lootParamsBuilder = new LootParams.Builder((ServerLevel) level)
+            .withParameter(LootContextParams.THIS_ENTITY, this.mob)
+            .withParameter(LootContextParams.ORIGIN, this.mob.position())
+            .withOptionalParameter(LootContextParams.BLOCK_ENTITY, level.getBlockEntity(targetBlock));
+
+        LootParams lootParams = lootParamsBuilder.create(LootContextParamSets.CHEST);
+
+        // Generate the loot
+        return lootTable.getRandomItems(lootParams);
     }
 
     @Override

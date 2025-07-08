@@ -91,7 +91,8 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
                     }
                 }
             } catch (Exception e) {
-                LOGGER.error("Error parsing entity values data from {}: {}", resourceLocation, e.getMessage());
+                LOGGER.error("Error parsing entity values data from {}: {} \n {}", resourceLocation, e.getMessage(), e.getStackTrace());
+                e.printStackTrace();
             }
         }
 

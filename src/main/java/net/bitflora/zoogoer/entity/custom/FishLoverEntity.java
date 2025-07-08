@@ -22,6 +22,11 @@ public class FishLoverEntity extends ZooGoerEntity {
         return 0.5;
     }
 
+    @Override
+    public Optional<String> getTipLootTable() {
+        return Optional.of("entities/fish_lover");
+    }
+
     public FishLoverEntity(EntityType<? extends AbstractVillager> entityType, Level level) {
         super(entityType, level);
     }

@@ -1,5 +1,8 @@
-- add specialist ZooGoers
-    - give them bonus drops
+- tip system
+    - move from entity loot drops (or they drop when dead)
+    - roll based on how good the zoo was.
+    - give everyone sensible drops
 - more specialists
     - Netherists
     - Endologists
+- redo all the entity names?

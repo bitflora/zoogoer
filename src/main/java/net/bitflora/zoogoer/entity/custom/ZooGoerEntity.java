@@ -108,6 +108,13 @@ public class ZooGoerEntity extends AbstractVillager {
         return rng.nextInt(limit);
     }
 
+    /**
+     * Override to specify the path a loot table that will (sometimes) deposit into the domation box
+     */
+    public Optional<String> getTipLootTable() {
+        return Optional.empty();
+    }
+
 
 
     public ZooGoerEntity(EntityType<? extends AbstractVillager> entityType, Level level) {
