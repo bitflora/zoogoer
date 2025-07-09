@@ -6,3 +6,4 @@
     - Netherists
     - Endologists
 - redo all the entity names?
+- save zoogoer properties

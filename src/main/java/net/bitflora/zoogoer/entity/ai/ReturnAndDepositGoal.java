@@ -112,7 +112,8 @@ public class ReturnAndDepositGoal extends Goal {
         if (blockEntity != null) {
             // Try to get the item handler capability using the new 1.20.1 system
             blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(itemHandler -> {
-                ItemStack emeralds = new ItemStack(Items.EMERALD, this.mob.calculatePrimaryDonation());
+                final int donation = this.mob.calculatePrimaryDonation();
+                ItemStack emeralds = new ItemStack(Items.EMERALD, donation);
 
                 // Try to insert the emeralds
                 if (emeralds.getCount() > 0) {
@@ -134,10 +135,15 @@ public class ReturnAndDepositGoal extends Goal {
                     var lootTable = mob.getTipLootTable();
                     if (lootTable.isPresent()) {
                         LOGGER.info("Tip table found!");
-                        List<ItemStack> lootItems = generateLootTableItems(lootTable.get());
-                        for (ItemStack lootItem : lootItems) {
-                            ItemStack lootRemainder = insertItems(itemHandler, lootItem);
-                            // If you want to track what couldn't be inserted, you can handle lootRemainder here
+                        boolean tipGiven = false;
+                        for (int i = 0; i < donation % 10; ++i) {
+                            List<ItemStack> lootItems = generateLootTableItems(lootTable.get());
+                            for (ItemStack lootItem : lootItems) {
+                                tipGiven = true;
+                                ItemStack lootRemainder = insertItems(itemHandler, lootItem);
+                            }
+                        }
+                        if (tipGiven) {
                             level.playSound(null, targetBlock,
                                 net.minecraft.sounds.SoundEvents.VILLAGER_YES,
                                 net.minecraft.sounds.SoundSource.BLOCKS,

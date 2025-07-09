@@ -4,35 +4,20 @@
     {
       "rolls": {
         "type": "minecraft:uniform",
-        "min": 1,
-        "max": 3
+        "min": 0,
+        "max": 1
       },
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:iron_ingot",
+          "name": "minecraft:kelp",
           "weight": 30,
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1,
-                "max": 3
-              }
-            }
-          ]
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:gold_ingot",
-          "weight": 20,
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 1,
+                "min": 0,
                 "max": 2
               }
             }
@@ -40,7 +25,33 @@
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:diamond",
+          "name": "minecraft:bucket",
+          "weight": 20,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 0,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:tag",
+          "name": "minecraft:corals",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "type": "minecraft:tag",
+          "name": "minecraft:coral_blocks",
           "weight": 5,
           "functions": [
             {
@@ -51,15 +62,30 @@
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:bread",
-          "weight": 45,
+          "name": "minecraft:small_dripleaf",
+          "weight": 10,
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 1,
-                "max": 4
+                "min": 0,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:nautilus_shell",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 0,
+                "max": 1
               }
             }
           ]
