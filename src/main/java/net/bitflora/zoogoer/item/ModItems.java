@@ -18,14 +18,14 @@ public class ModItems {
     public static final RegistryObject<Item> ZOO_GOER_SPAWN_EGG = ITEMS.register("zoo_goer_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.ZOO_GOER, 0xff0000, 0xffff00, new Item.Properties()));
 
-    public static final RegistryObject<Item> FISH_LOVER_SPAWN_EGG = ITEMS.register("fish_lover_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntities.FISH_LOVER, 0x0000ff, 0x00ff00, new Item.Properties()));
+    public static final RegistryObject<Item> FISH_ZOO_GOER_SPAWN_EGG = ITEMS.register("fish_zoo_goer_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.FISH_ZOO_GOER, 0x0000ff, 0x00ff00, new Item.Properties()));
 
-    public static final RegistryObject<Item> HERP_FAN_SPAWN_EGG = ITEMS.register("herp_fan_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntities.HERP_FAN, 0x000055, 0x0000ff, new Item.Properties()));
+    public static final RegistryObject<Item> HERP_ZOO_GOER_SPAWN_EGG = ITEMS.register("herp_zoo_goer_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.HERP_ZOO_GOER, 0x000055, 0x0000ff, new Item.Properties()));
 
-    public static final RegistryObject<Item> MONSTER_WATCHER_SPAWN_EGG = ITEMS.register("monster_watcher_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntities.MONSTER_WATCHER, 0xffffff, 0x000000, new Item.Properties()));
+    public static final RegistryObject<Item> MONSTER_ZOO_GOER_SPAWN_EGG = ITEMS.register("monster_zoo_goer_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.MONSTER_ZOO_GOER, 0xffffff, 0x000000, new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

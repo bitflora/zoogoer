@@ -15,6 +15,6 @@ public class ZooGoerRenderer extends MobRenderer<ZooGoerEntity, VillagerModel<Zo
 
     @Override
     public ResourceLocation getTextureLocation(ZooGoerEntity entity) {
-        return new ResourceLocation(ZooGoerMod.MOD_ID, "textures/entity/walker.png");
+        return new ResourceLocation(ZooGoerMod.MOD_ID, "textures/entity/base.png");
     }
 }

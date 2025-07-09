@@ -8,13 +8,13 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-public class HerpFanRenderer extends MobRenderer<HerpFanEntity, VillagerModel<HerpFanEntity>> {
-    public HerpFanRenderer(EntityRendererProvider.Context context) {
+public class MonsterZooGoerRenderer extends MobRenderer<MonsterZooGoerEntity, VillagerModel<MonsterZooGoerEntity>> {
+    public MonsterZooGoerRenderer(EntityRendererProvider.Context context) {
         super(context, new VillagerModel<>(context.bakeLayer(ModelLayers.VILLAGER)), 0.5F);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(HerpFanEntity entity) {
-        return new ResourceLocation(ZooGoerMod.MOD_ID, "textures/entity/herp_fan.png");
+    public ResourceLocation getTextureLocation(MonsterZooGoerEntity entity) {
+        return new ResourceLocation(ZooGoerMod.MOD_ID, "textures/entity/monster.png");
     }
 }

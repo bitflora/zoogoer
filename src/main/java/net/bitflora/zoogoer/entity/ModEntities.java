@@ -17,17 +17,17 @@ public class ModEntities {
             ENTITY_TYPES.register("zoo_goer", () -> EntityType.Builder.of(ZooGoerEntity::new, MobCategory.CREATURE)
                     .sized(2.5f, 2.5f).build("zoo_goer"));
 
-    public static final RegistryObject<EntityType<FishLoverEntity>> FISH_LOVER =
-        ENTITY_TYPES.register("fish_lover", () -> EntityType.Builder.of(FishLoverEntity::new, MobCategory.CREATURE)
-                .sized(2.5f, 2.5f).build("fish_lover"));
+    public static final RegistryObject<EntityType<FishZooGoerEntity>> FISH_ZOO_GOER =
+        ENTITY_TYPES.register("fish_zoo_goer", () -> EntityType.Builder.of(FishZooGoerEntity::new, MobCategory.CREATURE)
+                .sized(2.5f, 2.5f).build("fish_zoo_goer"));
 
-    public static final RegistryObject<EntityType<HerpFanEntity>> HERP_FAN =
-        ENTITY_TYPES.register("herp_fan", () -> EntityType.Builder.of(HerpFanEntity::new, MobCategory.CREATURE)
-                .sized(2.5f, 2.5f).build("herp_fan"));
+    public static final RegistryObject<EntityType<HerpZooGoerEntity>> HERP_ZOO_GOER =
+        ENTITY_TYPES.register("herp_zoo_goer", () -> EntityType.Builder.of(HerpZooGoerEntity::new, MobCategory.CREATURE)
+                .sized(2.5f, 2.5f).build("herp_zoo_goer"));
 
-    public static final RegistryObject<EntityType<MonsterWatcherEntity>> MONSTER_WATCHER =
-        ENTITY_TYPES.register("monster_watcher", () -> EntityType.Builder.of(MonsterWatcherEntity::new, MobCategory.CREATURE)
-                .sized(2.5f, 2.5f).build("monster_watcher"));
+    public static final RegistryObject<EntityType<MonsterZooGoerEntity>> MONSTER_ZOO_GOER =
+        ENTITY_TYPES.register("monster_zoo_goer", () -> EntityType.Builder.of(MonsterZooGoerEntity::new, MobCategory.CREATURE)
+                .sized(2.5f, 2.5f).build("monster_zoo_goer"));
 
 
     public static void register(IEventBus eventBus) {

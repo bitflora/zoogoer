@@ -1,7 +1,6 @@
 package net.bitflora.zoogoer.block;
 
 import net.bitflora.zoogoer.ZooGoerMod;
-import net.bitflora.zoogoer.block.custom.*;
 import net.bitflora.zoogoer.item.ModItems;
 import net.bitflora.zoogoer.sound.ModSounds;
 import net.minecraft.core.BlockPos;

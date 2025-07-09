@@ -10,11 +10,11 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-public class FishLoverEntity extends ZooGoerEntity {
+public class HerpZooGoerEntity extends ZooGoerEntity {
 
     @Override
     protected Optional<Double> getSpecialistValue(@Nonnull LivingEntity entity) {
-        return EntityValuesManager.FISH_VALUES.getEntityValue(entity);
+        return EntityValuesManager.HERP_VALUES.getEntityValue(entity);
     }
 
     @Override
@@ -22,12 +22,7 @@ public class FishLoverEntity extends ZooGoerEntity {
         return 0.5;
     }
 
-    @Override
-    public Optional<String> getTipLootTable() {
-        return Optional.of("gameplay/fish_tips");
-    }
-
-    public FishLoverEntity(EntityType<? extends AbstractVillager> entityType, Level level) {
+    public HerpZooGoerEntity(EntityType<? extends AbstractVillager> entityType, Level level) {
         super(entityType, level);
     }
 

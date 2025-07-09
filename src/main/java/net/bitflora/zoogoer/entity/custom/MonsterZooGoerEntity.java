@@ -10,7 +10,7 @@ import java.util.Optional;
 
 import javax.annotation.Nonnull;
 
-public class MonsterWatcherEntity extends ZooGoerEntity {
+public class MonsterZooGoerEntity extends ZooGoerEntity {
 
     @Override
     protected Optional<Double> getSpecialistValue(@Nonnull LivingEntity entity) {
@@ -22,7 +22,7 @@ public class MonsterWatcherEntity extends ZooGoerEntity {
         return 0.3;
     }
 
-    public MonsterWatcherEntity(EntityType<? extends AbstractVillager> entityType, Level level) {
+    public MonsterZooGoerEntity(EntityType<? extends AbstractVillager> entityType, Level level) {
         super(entityType, level);
     }
 

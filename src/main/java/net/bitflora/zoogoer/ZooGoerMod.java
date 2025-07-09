@@ -107,9 +107,9 @@ public class ZooGoerMod {
         public static void onClientSetup(FMLClientSetupEvent event) {
 
             EntityRenderers.register(ModEntities.ZOO_GOER.get(), ZooGoerRenderer::new);
-            EntityRenderers.register(ModEntities.FISH_LOVER.get(), FishLoverRenderer::new);
-            EntityRenderers.register(ModEntities.HERP_FAN.get(), HerpFanRenderer::new);
-            EntityRenderers.register(ModEntities.MONSTER_WATCHER.get(), MonsterWatcherRenderer::new);
+            EntityRenderers.register(ModEntities.FISH_ZOO_GOER.get(), FishZooGoerRenderer::new);
+            EntityRenderers.register(ModEntities.HERP_ZOO_GOER.get(), HerpZooGoerRenderer::new);
+            EntityRenderers.register(ModEntities.MONSTER_ZOO_GOER.get(), MonsterZooGoerRenderer::new);
 
         }
     }
