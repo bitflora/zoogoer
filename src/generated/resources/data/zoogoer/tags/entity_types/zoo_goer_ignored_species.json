@@ -5,8 +5,8 @@
     "minecraft:iron_golem",
     "minecraft:wandering_trader",
     "zoogoer:zoo_goer",
-    "zoogoer:fish_lover",
-    "zoogoer:herp_fan",
-    "zoogoer:monster_watcher"
+    "zoogoer:fish_zoo_goer",
+    "zoogoer:herp_zoo_goer",
+    "zoogoer:monster_zoo_goer"
   ]
 }

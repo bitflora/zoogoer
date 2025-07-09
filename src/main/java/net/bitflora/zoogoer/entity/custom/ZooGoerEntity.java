@@ -6,6 +6,7 @@ import net.bitflora.zoogoer.entity.ai.*;
 import net.bitflora.zoogoer.util.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -32,6 +33,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -127,6 +129,61 @@ public class ZooGoerEntity extends AbstractVillager {
     //     this.origin = origin;
     //     this.refreshDimensions();
     // }
+
+    // NBT Save/Load methods for persistence
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+
+        // Save origin position
+        if (this.origin != null) {
+            compound.putInt("OriginX", this.origin.getX());
+            compound.putInt("OriginY", this.origin.getY());
+            compound.putInt("OriginZ", this.origin.getZ());
+        }
+
+        // Save score
+        compound.putDouble("Score", this.score);
+
+        // Save detected species as a single string with delimiter
+        if (!this.detectedSpecies.isEmpty()) {
+            String speciesString = String.join(";", this.detectedSpecies.stream()
+                    .map(ResourceLocation::toString)
+                    .toArray(String[]::new));
+            compound.putString("DetectedSpecies", speciesString);
+        }
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+
+        // Load origin position
+        if (compound.contains("OriginX") && compound.contains("OriginY") && compound.contains("OriginZ")) {
+            int x = compound.getInt("OriginX");
+            int y = compound.getInt("OriginY");
+            int z = compound.getInt("OriginZ");
+            var origin = new BlockPos(x, y, z);
+            this.setOrigin(origin);
+        }
+
+        // Load score
+        if (compound.contains("Score")) {
+            this.score = compound.getDouble("Score");
+        }
+
+        // Load detected species
+        if (compound.contains("DetectedSpecies")) {
+            String speciesString = compound.getString("DetectedSpecies");
+            this.detectedSpecies.clear();
+            if (!speciesString.isEmpty()) {
+                String[] speciesArray = speciesString.split(";");
+                for (String species : speciesArray) {
+                    this.detectedSpecies.add(new ResourceLocation(species));
+                }
+            }
+        }
+    }
 
     @Override
     public EntityDimensions getDimensions(@Nonnull Pose pose ) {
