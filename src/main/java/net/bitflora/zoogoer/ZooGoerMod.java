@@ -49,6 +49,11 @@ public class ZooGoerMod {
     public static final RegistryObject<Item> ZOO_DONATION_BARREL_BLOCK_ITEM = ITEMS.register("zoo_donation_barrel_block",
         () -> new BlockItem(ZOO_DONATION_BARREL_BLOCK.get(), new Item.Properties()));
 
+    public static final RegistryObject<Block> BIRD_DONATION_BARREL_BLOCK = BLOCKS.register("bird_donation_barrel_block", BirdDonationBarrelBlock::new);
+    public static final RegistryObject<Item> BIRD_DONATION_BARREL_BLOCK_ITEM = ITEMS.register("bird_donation_barrel_block",
+        () -> new BlockItem(BIRD_DONATION_BARREL_BLOCK.get(), new Item.Properties()));
+
+
     public static final RegistryObject<Block> FISH_DONATION_BARREL_BLOCK = BLOCKS.register("fish_donation_barrel_block", FishDonationBarrelBlock::new);
     public static final RegistryObject<Item> FISH_DONATION_BARREL_BLOCK_ITEM = ITEMS.register("fish_donation_barrel_block",
         () -> new BlockItem(FISH_DONATION_BARREL_BLOCK.get(), new Item.Properties()));
@@ -107,6 +112,7 @@ public class ZooGoerMod {
         public static void onClientSetup(FMLClientSetupEvent event) {
 
             EntityRenderers.register(ModEntities.ZOO_GOER.get(), ZooGoerRenderer::new);
+            EntityRenderers.register(ModEntities.BIRD_ZOO_GOER.get(), BirdZooGoerRenderer::new);
             EntityRenderers.register(ModEntities.FISH_ZOO_GOER.get(), FishZooGoerRenderer::new);
             EntityRenderers.register(ModEntities.HERP_ZOO_GOER.get(), HerpZooGoerRenderer::new);
             EntityRenderers.register(ModEntities.MONSTER_ZOO_GOER.get(), MonsterZooGoerRenderer::new);

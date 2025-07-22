@@ -17,6 +17,10 @@ public class ModEntities {
             ENTITY_TYPES.register("zoo_goer", () -> EntityType.Builder.of(ZooGoerEntity::new, MobCategory.CREATURE)
                     .sized(2.5f, 2.5f).build("zoo_goer"));
 
+    public static final RegistryObject<EntityType<BirdZooGoerEntity>> BIRD_ZOO_GOER =
+        ENTITY_TYPES.register("bird_zoo_goer", () -> EntityType.Builder.of(BirdZooGoerEntity::new, MobCategory.CREATURE)
+                .sized(2.5f, 2.5f).build("bird_zoo_goer"));
+
     public static final RegistryObject<EntityType<FishZooGoerEntity>> FISH_ZOO_GOER =
         ENTITY_TYPES.register("fish_zoo_goer", () -> EntityType.Builder.of(FishZooGoerEntity::new, MobCategory.CREATURE)
                 .sized(2.5f, 2.5f).build("fish_zoo_goer"));

@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "zoogoer:block/barrel_bottom",
+    "up": "zoogoer:block/barrel_top",
+    "north": "zoogoer:block/bird_barrel_side",
+    "east": "zoogoer:block/bird_barrel_side",
+    "south": "zoogoer:block/bird_barrel_side",
+    "west": "zoogoer:block/bird_barrel_side"
+  }
+}

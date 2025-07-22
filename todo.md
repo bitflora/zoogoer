@@ -3,6 +3,8 @@
     - roll based on how good the zoo was.
     - give everyone sensible drops
 - more specialists
+    - Bird Watcher
+        - zawa, unusual prehistory tables
     - Netherists
     - Endologists
 - redo all the entity names?

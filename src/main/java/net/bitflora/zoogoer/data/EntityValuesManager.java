@@ -35,6 +35,7 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
 
 
     static public EntityValuesManager BASE_VALUES = new EntityValuesManager("animal_scores/base");
+    static public EntityValuesManager BIRD_VALUES = new EntityValuesManager("animal_scores/bord");
     static public EntityValuesManager FISH_VALUES = new EntityValuesManager("animal_scores/fish_lover");
     static public EntityValuesManager HERP_VALUES = new EntityValuesManager("animal_scores/herp_fan");
     static public EntityValuesManager MONSTER_VALUES = new EntityValuesManager("animal_scores/monster_watcher");
@@ -161,6 +162,7 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
     @SubscribeEvent
     public static void onAddReloadListeners(AddReloadListenerEvent event) {
         event.addListener(BASE_VALUES);
+        event.addListener(BIRD_VALUES);
         event.addListener(FISH_VALUES);
         event.addListener(HERP_VALUES);
         event.addListener(MONSTER_VALUES);
