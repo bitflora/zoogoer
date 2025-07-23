@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "zoogoer:zoo_donation_barrel_block",
+    "zoogoer:bird_donation_barrel_block",
+    "zoogoer:fish_donation_barrel_block",
+    "zoogoer:herp_donation_barrel_block",
+    "zoogoer:monster_donation_barrel_block"
+  ]
+}
