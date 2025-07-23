@@ -9,10 +9,10 @@
       "item": "minecraft:emerald_block"
     },
     "R": {
-      "item": "minecraft:blue_dye"
+      "item": "minecraft:yellow_dye"
     },
     "X": {
-      "tag": "forge:raw_fishes"
+      "tag": "forge:feathers"
     }
   },
   "pattern": [
@@ -21,7 +21,7 @@
     "RER"
   ],
   "result": {
-    "item": "zoogoer:fish_donation_barrel_block"
+    "item": "zoogoer:bird_donation_barrel_block"
   },
   "show_notification": true
 }
