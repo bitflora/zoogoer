@@ -1,12 +1,12 @@
 {
-  "alexsmobs.roadrunner": 2,
-  "alexsmobs.hummingbird": 2,
-  "alexsmobs.sunbird": 20,
-  "alexsmobs.shoebill": 2,
-  "alexsmobs.crow": 2,
-  "alexsmobs.emu": 2,
-  "alexsmobs.bald_eagle": 4,
-  "alexsmobs.seagull": 2,
-  "alexsmobs.toucan": 2,
-  "alexsmobs.blue_jay": 2
+  "alexsmobs:roadrunner": 2,
+  "alexsmobs:hummingbird": 2,
+  "alexsmobs:sunbird": 20,
+  "alexsmobs:shoebill": 2,
+  "alexsmobs:crow": 2,
+  "alexsmobs:emu": 2,
+  "alexsmobs:bald_eagle": 4,
+  "alexsmobs:seagull": 2,
+  "alexsmobs:toucan": 2,
+  "alexsmobs:blue_jay": 2
 }

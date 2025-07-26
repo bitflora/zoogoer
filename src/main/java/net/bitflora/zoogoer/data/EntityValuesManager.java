@@ -74,18 +74,22 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
 
                                 entityTagValues.put(tagKey, value);
                                 LOGGER.debug("Added entity tag value: {} = {}", tagName, value);
-                            } if (identifier.endsWith(":")) {
+                            } else if (identifier.endsWith(":")) {
                                 modValues.put(identifier, value);
                             } else {
                                 // It's an individual entity type
-                                ResourceLocation entityLocation = new ResourceLocation(identifier);
-                                EntityType<?> entityType = ForgeRegistries.ENTITY_TYPES.getValue(entityLocation);
+                                try {
+                                    ResourceLocation entityLocation = new ResourceLocation(identifier);
+                                    EntityType<?> entityType = ForgeRegistries.ENTITY_TYPES.getValue(entityLocation);
 
-                                if (entityType != null) {
-                                    individualEntityValues.put(entityType, value);
-                                    LOGGER.debug("Added individual entity value: {} = {}", identifier, value);
-                                } else {
-                                    LOGGER.warn("Unknown entity type: {}", identifier);
+                                    if (entityType != null) {
+                                        individualEntityValues.put(entityType, value);
+                                        LOGGER.debug("Added individual entity value: {} = {}", identifier, value);
+                                    } else {
+                                        LOGGER.warn("Unknown entity type: {}", identifier);
+                                    }
+                                } catch (Exception e) {
+                                    LOGGER.error("Unable to parse entity: {}", identifier);
                                 }
                             }
                         }
