@@ -62,7 +62,7 @@ public class ZooGoerEntity extends AbstractVillager {
 
     public void setOrigin(BlockPos origin) {
         this.origin = origin;
-        this.goalSelector.addGoal(1, new ReturnAndDepositGoal(this, this.origin, 1.0));
+        this.goalSelector.addGoal(2, new ReturnAndDepositGoal(this, this.origin, 1.0));
     }
 
     @Nullable
@@ -207,15 +207,15 @@ public class ZooGoerEntity extends AbstractVillager {
         int priority = 0;
 
         // Only add the AI goals you actually want
-        // this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(0, new FloatGoal(this));
 
         // this.goalSelector.addGoal(1, new RhinoAttackGoal(this, 1.0D, true));
 
         // this.goalSelector.addGoal(1, new RandomStrollGoal(this, 1.0));
-        this.goalSelector.addGoal(0, new PanicGoal(this, 2.0));
+        this.goalSelector.addGoal(1, new PanicGoal(this, 2.0));
 
-        this.goalSelector.addGoal(2, new SpeciesCounterGoal(this, LOOK_RANGE, 300));
-        this.goalSelector.addGoal(3, new AnimalAIWanderRanged(this, 100, 1.0, 25, 25));
+        this.goalSelector.addGoal(3, new SpeciesCounterGoal(this, LOOK_RANGE, 300));
+        this.goalSelector.addGoal(4, new AnimalAIWanderRanged(this, 100, 1.0, 25, 25));
         // this.goalSelector.addGoal(priority++, new LookAtPlayerGoal(this, PathfinderMob.class, 10.0F));
         // this.goalSelector.addGoal(priority++, new RandomLookAroundGoal(this));
 

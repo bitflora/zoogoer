@@ -79,7 +79,7 @@ public class ZooDonationBarrelBlock extends BaseEntityBlock {
         walker.setPos(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5);
         walker.finalizeSpawn(level, level.getCurrentDifficultyAt(spawnPos), MobSpawnType.SPAWNER, null, null);
 
-        level.addFreshEntity(walker);
+        level.addFreshEntityWithPassengers(walker);
     }
 
     @Override
