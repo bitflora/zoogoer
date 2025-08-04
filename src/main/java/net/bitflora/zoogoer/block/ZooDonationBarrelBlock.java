@@ -2,6 +2,8 @@
 package net.bitflora.zoogoer.block;
 
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 import net.bitflora.zoogoer.block.entity.ZooDonationBarrelBlockEntity;
@@ -17,20 +19,21 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 public class ZooDonationBarrelBlock extends BaseEntityBlock {
 
     public ZooDonationBarrelBlock() {
         super(BlockBehaviour.Properties.of()
-            .mapColor(MapColor.STONE)
-            .strength(3.0F, 3.0F)
-            .requiresCorrectToolForDrops());
+            .mapColor(MapColor.WOOD)
+            .strength(1.3F, 3.0F));
     }
 
     protected ZooGoerEntity getEntityType(ServerLevel level) {
@@ -102,5 +105,17 @@ public class ZooDonationBarrelBlock extends BaseEntityBlock {
             }
             super.onRemove(state, level, pos, newState, isMoving);
         }
+    }
+
+    @Override
+    public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
+        List<ItemStack> drops = super.getDrops(state, builder);
+
+        // If no drops were generated (e.g., no loot table), add the block item
+        if (drops.isEmpty()) {
+            drops.add(new ItemStack(this.asItem()));
+        }
+
+        return drops;
     }
 }
