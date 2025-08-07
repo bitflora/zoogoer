@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
+    "particle": "zoogoer:block/fish_barrel_side",
     "down": "zoogoer:block/barrel_bottom",
     "up": "zoogoer:block/barrel_top",
     "north": "zoogoer:block/fish_barrel_side",
