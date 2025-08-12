@@ -22,6 +22,11 @@ public class HerpZooGoerEntity extends ZooGoerEntity {
         return 0.5;
     }
 
+    @Override
+    public Optional<String> getTipLootTable() {
+        return Optional.of("gameplay/herp_tips");
+    }
+
     public HerpZooGoerEntity(EntityType<? extends AbstractVillager> entityType, Level level) {
         super(entityType, level);
     }

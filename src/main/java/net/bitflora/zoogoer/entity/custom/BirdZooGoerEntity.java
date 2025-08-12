@@ -22,6 +22,11 @@ public class BirdZooGoerEntity extends ZooGoerEntity {
         return 0.5;
     }
 
+    @Override
+    public Optional<String> getTipLootTable() {
+        return Optional.of("gameplay/bird_tips");
+    }
+
     public BirdZooGoerEntity(EntityType<? extends AbstractVillager> entityType, Level level) {
         super(entityType, level);
     }

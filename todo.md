@@ -1,11 +1,3 @@
-- tip system
-    - move from entity loot drops (or they drop when dead)
-    - roll based on how good the zoo was.
-    - give everyone sensible drops
 - more specialists
-    - Bird Watcher
-        - zawa, unusual prehistory tables
-    - Netherists
-    - Endologists
-- redo all the entity names?
-- save zoogoer properties
+    - stargazers
+- switch to also reward multiple of the same species?
