@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:entity",
+  "type": "generic",
   "pools": [
     {
       "rolls": {
@@ -39,8 +39,8 @@
           ]
         },
         {
-          "type": "minecraft:tag",
-          "name": "minecraft:corals",
+          "type": "minecraft:item",
+          "name": "minecraft:horn_coral",
           "weight": 5,
           "functions": [
             {
@@ -50,8 +50,8 @@
           ]
         },
         {
-          "type": "minecraft:tag",
-          "name": "minecraft:coral_blocks",
+          "type": "minecraft:item",
+          "name": "minecraft:fire_coral_block",
           "weight": 5,
           "functions": [
             {

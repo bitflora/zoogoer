@@ -134,10 +134,11 @@ public class ReturnAndDepositGoal extends Goal {
                     // Deposit loot table items
                     var lootTable = mob.getTipLootTable();
                     if (lootTable.isPresent()) {
-                        LOGGER.info("Tip table found!");
+                        LOGGER.info("Tip table found: {}", lootTable.get());
                         boolean tipGiven = false;
                         for (int i = 0; i < donation % 10; ++i) {
                             List<ItemStack> lootItems = generateLootTableItems(lootTable.get());
+                            LOGGER.info("Loot generated: {} stacks", lootItems.size());
                             for (ItemStack lootItem : lootItems) {
                                 tipGiven = true;
                                 ItemStack lootRemainder = insertItems(itemHandler, lootItem);
@@ -171,6 +172,7 @@ public class ReturnAndDepositGoal extends Goal {
 
         // Replace with your custom loot table resource location
         ResourceLocation lootTableLocation = new ResourceLocation(ZooGoerMod.MOD_ID, tablePath);
+        LOGGER.info("loot table: {}", tablePath);
 
         // Get the loot table from the server's loot manager
         LootTable lootTable = level.getServer().getLootData().getLootTable(lootTableLocation);

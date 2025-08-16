@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:entity",
+  "type": "generic",
   "pools": [
     {
       "rolls": {
@@ -54,7 +54,7 @@
           ]
         },
         {
-          "type": "minecraft:tag",
+          "type": "minecraft:item",
           "name": "minecraft:moss_carpet",
           "weight": 10,
           "functions": [

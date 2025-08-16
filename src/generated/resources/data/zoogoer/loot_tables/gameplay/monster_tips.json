@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:entity",
+  "type": "generic",
   "pools": [
     {
       "rolls": {

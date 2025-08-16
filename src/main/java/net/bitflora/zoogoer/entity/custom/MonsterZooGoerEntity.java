@@ -22,6 +22,11 @@ public class MonsterZooGoerEntity extends ZooGoerEntity {
         return 0.3;
     }
 
+    @Override
+    public Optional<String> getTipLootTable() {
+        return Optional.of("gameplay/monster_tips");
+    }
+
     public MonsterZooGoerEntity(EntityType<? extends AbstractVillager> entityType, Level level) {
         super(entityType, level);
     }
