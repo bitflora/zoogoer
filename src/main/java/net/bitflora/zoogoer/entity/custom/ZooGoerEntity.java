@@ -35,10 +35,13 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
@@ -56,7 +59,8 @@ import org.slf4j.LoggerFactory;
 public class ZooGoerEntity extends AbstractVillager {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractVillager.class);
     private BlockPos origin;
-    private Set<ResourceLocation> detectedSpecies = new HashSet<>();
+    private Map<ResourceLocation, Integer> speciesCount = new HashMap<>();
+    private Set<UUID> countedEntities = new HashSet<>();
 
     double score = 0.0;
 
@@ -80,16 +84,28 @@ public class ZooGoerEntity extends AbstractVillager {
 
     public void noticeMob(@Nonnull LivingEntity entity) {
         ResourceLocation entityType = ForgeRegistries.ENTITY_TYPES.getKey(entity.getType());
-        //String entityTypeName = entityType.toString();
+        UUID entityId = entity.getUUID();
 
         if (!entity.getType().is(ModTags.Entities.ZOO_GOER_IGNORED_SPECIES)) {
-            if (this.detectedSpecies.add(entityType)) {
+            // Only count if we haven't seen this specific entity before
+            if (!this.countedEntities.contains(entityId)) {
+                this.countedEntities.add(entityId);
+
+                int currentCount = this.speciesCount.getOrDefault(entityType, 0);
+                this.speciesCount.put(entityType, currentCount + 1);
+
+                // Calculate value with diminishing returns
                 var specialistValue = getSpecialistValue(entity);
                 var baseValue = EntityValuesManager.BASE_VALUES.getEntityValue(entity);
                 var baseModifier = getBaseModifier();
-                double value = specialistValue.orElse(baseValue.orElse(1.0) * baseModifier);
-                score += value;
-                LOGGER.info("Saw {} which is worth specialist {}, base {}, actual {}", entityType, specialistValue, baseValue, value);
+                double fullValue = specialistValue.orElse(baseValue.orElse(1.0) * baseModifier);
+
+                // Apply diminishing returns: each additional mob of same species is worth half as much
+                double diminishedValue = fullValue * Math.pow(0.5, currentCount);
+
+                score += diminishedValue;
+                LOGGER.info("Saw {} (count: {}) which is worth specialist {}, base {}, full value {}, diminished value {}",
+                           entityType, currentCount + 1, specialistValue, baseValue, fullValue, diminishedValue);
                 LOGGER.info(" Score is now {}", score);
             }
         } else {
@@ -98,9 +114,11 @@ public class ZooGoerEntity extends AbstractVillager {
     }
 
     public void debugNoticedMobs() {
-        LOGGER.info("{} counted {} unique species nearby", this.getName().getString(), this.detectedSpecies.size());
-        for (var species : this.detectedSpecies) {
-            LOGGER.info("- {}", species);
+        int totalMobs = this.speciesCount.values().stream().mapToInt(Integer::intValue).sum();
+        LOGGER.info("{} counted {} mobs across {} unique species nearby",
+                   this.getName().getString(), totalMobs, this.speciesCount.size());
+        for (var entry : this.speciesCount.entrySet()) {
+            LOGGER.info("- {}: {} seen", entry.getKey(), entry.getValue());
         }
     }
 
@@ -117,18 +135,10 @@ public class ZooGoerEntity extends AbstractVillager {
         return Optional.empty();
     }
 
-
-
     public ZooGoerEntity(EntityType<? extends AbstractVillager> entityType, Level level) {
         super(entityType, level);
         this.refreshDimensions();
     }
-
-    // public ZooGoerEntity(@Nullable BlockPos origin, EntityType<? extends AbstractVillager> entityType, Level level) {
-    //     super(entityType, level);
-    //     this.origin = origin;
-    //     this.refreshDimensions();
-    // }
 
     // NBT Save/Load methods for persistence
     @Override
@@ -145,13 +155,22 @@ public class ZooGoerEntity extends AbstractVillager {
         // Save score
         compound.putDouble("Score", this.score);
 
-        // Save detected species as a single string with delimiter
-        if (!this.detectedSpecies.isEmpty()) {
-            String speciesString = String.join(";", this.detectedSpecies.stream()
-                    .map(ResourceLocation::toString)
-                    .toArray(String[]::new));
-            compound.putString("DetectedSpecies", speciesString);
+        // Save species counts
+        CompoundTag speciesTag = new CompoundTag();
+        for (Map.Entry<ResourceLocation, Integer> entry : this.speciesCount.entrySet()) {
+            speciesTag.putInt(entry.getKey().toString(), entry.getValue());
         }
+        compound.put("SpeciesCount", speciesTag);
+
+        // Save counted entities
+        long[] entityIds = this.countedEntities.stream()
+            .mapToLong(uuid -> uuid.getMostSignificantBits())
+            .toArray();
+        long[] entityIds2 = this.countedEntities.stream()
+            .mapToLong(uuid -> uuid.getLeastSignificantBits())
+            .toArray();
+        compound.putLongArray("CountedEntitiesMSB", entityIds);
+        compound.putLongArray("CountedEntitiesLSB", entityIds2);
     }
 
     @Override
@@ -172,14 +191,33 @@ public class ZooGoerEntity extends AbstractVillager {
             this.score = compound.getDouble("Score");
         }
 
-        // Load detected species
-        if (compound.contains("DetectedSpecies")) {
+        // Load species counts
+        if (compound.contains("SpeciesCount")) {
+            CompoundTag speciesTag = compound.getCompound("SpeciesCount");
+            this.speciesCount.clear();
+            for (String key : speciesTag.getAllKeys()) {
+                int count = speciesTag.getInt(key);
+                this.speciesCount.put(new ResourceLocation(key), count);
+            }
+        }
+
+        // Load counted entities
+        if (compound.contains("CountedEntitiesMSB") && compound.contains("CountedEntitiesLSB")) {
+            long[] entityIdsMSB = compound.getLongArray("CountedEntitiesMSB");
+            long[] entityIdsLSB = compound.getLongArray("CountedEntitiesLSB");
+            this.countedEntities.clear();
+            for (int i = 0; i < Math.min(entityIdsMSB.length, entityIdsLSB.length); i++) {
+                this.countedEntities.add(new UUID(entityIdsMSB[i], entityIdsLSB[i]));
+            }
+        }
+
+        // Handle legacy data from old format
+        if (compound.contains("DetectedSpecies") && this.speciesCount.isEmpty()) {
             String speciesString = compound.getString("DetectedSpecies");
-            this.detectedSpecies.clear();
             if (!speciesString.isEmpty()) {
                 String[] speciesArray = speciesString.split(";");
                 for (String species : speciesArray) {
-                    this.detectedSpecies.add(new ResourceLocation(species));
+                    this.speciesCount.put(new ResourceLocation(species), 1);
                 }
             }
         }
@@ -265,175 +303,3 @@ public class ZooGoerEntity extends AbstractVillager {
         return SoundEvents.VILLAGER_DEATH;
     }
 }
-
-// public class RhinoEntity extends AbstractVillager {
-//     private static final EntityDataAccessor<Boolean> ATTACKING =
-//             SynchedEntityData.defineId(RhinoEntity.class, EntityDataSerializers.BOOLEAN);
-
-//     public RhinoEntity(EntityType<? extends AbstractVillager> pEntityType, Level pLevel) {
-//         super(pEntityType, pLevel);
-//         this.refreshDimensions();
-//     }
-
-//     public final AnimationState idleAnimationState = new AnimationState();
-//     private int idleAnimationTimeout = 0;
-
-//     public final AnimationState attackAnimationState = new AnimationState();
-//     public int attackAnimationTimeout = 0;
-
-
-//     @Override
-//     public void tick() {
-//         super.tick();
-
-//         if(this.level().isClientSide()) {
-//             setupAnimationStates();
-//         }
-//     }
-
-//     private void setupAnimationStates() {
-//         if(this.idleAnimationTimeout <= 0) {
-//             this.idleAnimationTimeout = this.random.nextInt(40) + 80;
-//             this.idleAnimationState.start(this.tickCount);
-//         } else {
-//             --this.idleAnimationTimeout;
-//         }
-
-//         if(this.isAttacking() && attackAnimationTimeout <= 0) {
-//             attackAnimationTimeout = 80; // Length in ticks of your animation
-//             attackAnimationState.start(this.tickCount);
-//         } else {
-//             --this.attackAnimationTimeout;
-//         }
-
-//         if(!this.isAttacking()) {
-//             attackAnimationState.stop();
-//         }
-//     }
-
-//     @Override
-//     protected void updateWalkAnimation(float pPartialTick) {
-//         float f;
-//         if(this.getPose() == Pose.STANDING) {
-//             f = Math.min(pPartialTick * 6F, 1f);
-//         } else {
-//             f = 0f;
-//         }
-
-//         this.walkAnimation.update(f, 0.2f);
-//     }
-
-//     public void setAttacking(boolean attacking) {
-//         this.entityData.set(ATTACKING, attacking);
-//     }
-
-//     public boolean isAttacking() {
-//         return this.entityData.get(ATTACKING);
-//     }
-
-//     @Override
-//     protected void defineSynchedData() {
-//         super.defineSynchedData();
-//         this.entityData.define(ATTACKING, false);
-//     }
-
-//     @Override
-//     protected void registerGoals() {
-//         // this.goalSelector.addGoal(0, new FloatGoal(this));
-
-//         // this.goalSelector.addGoal(1, new RhinoAttackGoal(this, 1.0D, true));
-
-//         // this.goalSelector.addGoal(1, new RandomStrollGoal(this, 1.0));
-//         var destination = new BlockPos(this.getBlockX() + 10, this.getBlockY(), this.getBlockZ() + 10);
-//         // this.goalSelector.addGoal(1, new MoveToGoal(this, 1.0, destination));
-//         this.goalSelector.addGoal(1, new WalkForwardGoal(this, 50));
-//         //this.goalSelector.addGoal(1, new WalkForwardGoal(this, 20));
-
-//         // this.goalSelector.addGoal(1, new BreedGoal(this, 1.15D));
-//         // this.goalSelector.addGoal(2, new TemptGoal(this, 1.2D, Ingredient.of(Items.COOKED_BEEF), false));
-
-//         // this.goalSelector.addGoal(3, new FollowParentGoal(this, 1.1D));
-
-//         // this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.1D));
-//         // this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 3f));
-//         // this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-
-//         // this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-//     }
-
-//     public static AttributeSupplier.Builder createAttributes() {
-//         return Animal.createLivingAttributes()
-//                 .add(Attributes.MAX_HEALTH, 20D)
-//                 .add(Attributes.FOLLOW_RANGE, 24D)
-//                 .add(Attributes.MOVEMENT_SPEED, 0.25D)
-//                 .add(Attributes.ARMOR_TOUGHNESS, 0.1f)
-//                 .add(Attributes.ATTACK_KNOCKBACK, 0.5f)
-//                 .add(Attributes.ATTACK_DAMAGE, 2f);
-//     }
-
-//     @Nullable
-//     @Override
-//     public AgeableMob getBreedOffspring(ServerLevel pLevel, AgeableMob pOtherParent) {
-//         return ModEntities.RHINO.get().create(pLevel);
-//     }
-
-
-//     // @Nullable
-//     // @Override
-//     // protected SoundEvent getAmbientSound() {
-//     //     return SoundEvents.HOGLIN_AMBIENT;
-//     // }
-
-//     // @Nullable
-//     // @Override
-//     // protected SoundEvent getHurtSound(DamageSource pDamageSource) {
-//     //     return SoundEvents.RAVAGER_HURT;
-//     // }
-
-//     // @Nullable
-//     // @Override
-//     // protected SoundEvent getDeathSound() {
-//     //     return SoundEvents.DOLPHIN_DEATH;
-//     // }
-
-//     @Override
-//     protected void rewardTradeXp(MerchantOffer pOffer) {
-//         // TODO Auto-generated method stub
-//     }
-
-//     @Override
-//     protected void updateTrades() {
-//         // TODO Auto-generated method stub
-//     }
-
-//     @Override
-//     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-//         // Customize what happens when player right-clicks
-//         if (!this.level().isClientSide) {
-//             return InteractionResult.SUCCESS;
-//         }
-//         return InteractionResult.sidedSuccess(this.level().isClientSide);
-//     }
-
-//     @Override
-//     public boolean removeWhenFarAway(double distance) {
-//         return false; // Prevent despawning like villagers
-//     }
-
-//     @Override
-//     protected void pickUpItem(ItemEntity itemEntity) {
-//         // Control what items the entity can pick up
-//         // Override to prevent item pickup or customize behavior
-//     }
-
-//     @Override
-//     public boolean isSleeping() {
-//         return false; // Prevent sleeping behavior
-//     }
-
-//     @Override
-//     protected void customServerAiStep() {
-//         // Override villager's daily schedule logic
-//         super.customServerAiStep();
-//     }
-// }
