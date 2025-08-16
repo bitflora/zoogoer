@@ -172,7 +172,7 @@ public class ReturnAndDepositGoal extends Goal {
 
         // Replace with your custom loot table resource location
         ResourceLocation lootTableLocation = new ResourceLocation(ZooGoerMod.MOD_ID, tablePath);
-        LOGGER.info("loot table: {}", tablePath);
+        LOGGER.info("loot table for {}: {}", this.mob, tablePath);
 
         // Get the loot table from the server's loot manager
         LootTable lootTable = level.getServer().getLootData().getLootTable(lootTableLocation);

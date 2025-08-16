@@ -12,6 +12,6 @@ public class HerpDonationBarrelBlock extends ZooDonationBarrelBlock {
 
     @Override
     protected ZooGoerEntity getEntityType(ServerLevel level) {
-        return new FishZooGoerEntity(ModEntities.HERP_ZOO_GOER.get(), level);
+        return new HerpZooGoerEntity(ModEntities.HERP_ZOO_GOER.get(), level);
     }
 }
