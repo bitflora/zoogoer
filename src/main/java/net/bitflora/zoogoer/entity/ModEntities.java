@@ -33,6 +33,10 @@ public class ModEntities {
         ENTITY_TYPES.register("monster_zoo_goer", () -> EntityType.Builder.of(MonsterZooGoerEntity::new, MobCategory.CREATURE)
                 .sized(2.5f, 2.5f).build("monster_zoo_goer"));
 
+    public static final RegistryObject<EntityType<StarZooGoerEntity>> STAR_ZOO_GOER =
+        ENTITY_TYPES.register("star_zoo_goer", () -> EntityType.Builder.of(StarZooGoerEntity::new, MobCategory.CREATURE)
+                .sized(2.5f, 2.5f).build("star_zoo_goer"));
+
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

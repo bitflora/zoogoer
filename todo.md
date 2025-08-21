@@ -1,3 +1,1 @@
-- more specialists
-    - stargazers
-- switch to also reward multiple of the same species?
+- maybe reward based on variants

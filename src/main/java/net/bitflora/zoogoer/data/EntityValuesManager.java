@@ -39,6 +39,7 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
     static public EntityValuesManager FISH_VALUES = new EntityValuesManager("animal_scores/fish_lover");
     static public EntityValuesManager HERP_VALUES = new EntityValuesManager("animal_scores/herp_fan");
     static public EntityValuesManager MONSTER_VALUES = new EntityValuesManager("animal_scores/monster_watcher");
+    static public EntityValuesManager STAR_VALUES = new EntityValuesManager("animal_scores/star_watcher");
 
     public EntityValuesManager(String pDirectory) {
         super(GSON, pDirectory);

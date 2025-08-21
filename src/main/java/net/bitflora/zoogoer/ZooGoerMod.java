@@ -66,6 +66,10 @@ public class ZooGoerMod {
     public static final RegistryObject<Item> MONSTER_DONATION_BARREL_BLOCK_ITEM = ITEMS.register("monster_donation_barrel_block",
         () -> new BlockItem(MONSTER_DONATION_BARREL_BLOCK.get(), new Item.Properties()));
 
+    public static final RegistryObject<Block> STAR_DONATION_BARREL_BLOCK = BLOCKS.register("star_donation_barrel_block", StarDonationBarrelBlock::new);
+    public static final RegistryObject<Item> STAR_DONATION_BARREL_BLOCK_ITEM = ITEMS.register("star_donation_barrel_block",
+        () -> new BlockItem(STAR_DONATION_BARREL_BLOCK.get(), new Item.Properties()));
+
     public ZooGoerMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -116,6 +120,7 @@ public class ZooGoerMod {
             EntityRenderers.register(ModEntities.FISH_ZOO_GOER.get(), FishZooGoerRenderer::new);
             EntityRenderers.register(ModEntities.HERP_ZOO_GOER.get(), HerpZooGoerRenderer::new);
             EntityRenderers.register(ModEntities.MONSTER_ZOO_GOER.get(), MonsterZooGoerRenderer::new);
+            EntityRenderers.register(ModEntities.STAR_ZOO_GOER.get(), StarZooGoerRenderer::new);
 
         }
     }

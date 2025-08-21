@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "zoogoer:block/star_barrel_side",
+    "down": "zoogoer:block/barrel_bottom",
+    "up": "zoogoer:block/barrel_top",
+    "north": "zoogoer:block/star_barrel_side",
+    "east": "zoogoer:block/star_barrel_side",
+    "south": "zoogoer:block/star_barrel_side",
+    "west": "zoogoer:block/star_barrel_side"
+  }
+}

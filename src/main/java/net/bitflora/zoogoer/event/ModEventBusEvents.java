@@ -16,5 +16,6 @@ public class ModEventBusEvents {
         event.put(ModEntities.FISH_ZOO_GOER.get(), FishZooGoerEntity.createAttributes().build());
         event.put(ModEntities.HERP_ZOO_GOER.get(), HerpZooGoerEntity.createAttributes().build());
         event.put(ModEntities.MONSTER_ZOO_GOER.get(), MonsterZooGoerEntity.createAttributes().build());
+        event.put(ModEntities.STAR_ZOO_GOER.get(), StarZooGoerEntity.createAttributes().build());
     }
 }

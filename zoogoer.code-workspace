@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"workbench.colorTheme": "Abyss",
+		"java.compile.nullAnalysis.mode": "automatic"
+	}
+}

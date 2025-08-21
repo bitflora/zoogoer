@@ -124,8 +124,12 @@ public class ZooGoerEntity extends AbstractVillager {
 
     public int calculatePrimaryDonation() {
         int limit = (int) Math.floor(this.score);
-        Random rng = new Random();
-        return rng.nextInt(limit);
+        if(limit > 0) {
+            Random rng = new Random();
+            return rng.nextInt(limit);
+        } else {
+            return 0;
+        }
     }
 
     /**
