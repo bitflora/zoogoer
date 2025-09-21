@@ -35,7 +35,7 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
 
 
     static public EntityValuesManager BASE_VALUES = new EntityValuesManager("animal_scores/base");
-    static public EntityValuesManager BIRD_VALUES = new EntityValuesManager("animal_scores/bord");
+    static public EntityValuesManager BIRD_VALUES = new EntityValuesManager("animal_scores/bird");
     static public EntityValuesManager FISH_VALUES = new EntityValuesManager("animal_scores/fish_lover");
     static public EntityValuesManager HERP_VALUES = new EntityValuesManager("animal_scores/herp_fan");
     static public EntityValuesManager MONSTER_VALUES = new EntityValuesManager("animal_scores/monster_watcher");
