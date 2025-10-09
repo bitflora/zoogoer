@@ -122,6 +122,8 @@ public class ZooGoerMod {
             EntityRenderers.register(ModEntities.MONSTER_ZOO_GOER.get(), MonsterZooGoerRenderer::new);
             EntityRenderers.register(ModEntities.STAR_ZOO_GOER.get(), StarZooGoerRenderer::new);
 
+            EntityRenderers.register(ModEntities.STEVE_MOB.get(), SteveRenderer::new);
+
         }
     }
 }

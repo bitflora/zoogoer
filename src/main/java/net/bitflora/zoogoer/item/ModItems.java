@@ -28,10 +28,14 @@ public class ModItems {
             () -> new ForgeSpawnEggItem(ModEntities.HERP_ZOO_GOER, 0x000055, 0x0000ff, new Item.Properties()));
 
     public static final RegistryObject<Item> MONSTER_ZOO_GOER_SPAWN_EGG = ITEMS.register("monster_zoo_goer_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntities.MONSTER_ZOO_GOER, 0xffffff, 0x000000, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(ModEntities.MONSTER_ZOO_GOER, 0x333333, 0x000000, new Item.Properties()));
 
     public static final RegistryObject<Item> STAR_ZOO_GOER_SPAWN_EGG = ITEMS.register("star_zoo_goer_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntities.STAR_ZOO_GOER, 0xffffff, 0x000000, new Item.Properties()));
+            () -> new ForgeSpawnEggItem(ModEntities.STAR_ZOO_GOER, 0x000000, 0xffff00, new Item.Properties()));
+
+public static final RegistryObject<Item> STEVE_SPAWN_EGG = ITEMS.register("steve_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.STEVE_MOB, 0xffffff, 0x000000, new Item.Properties()));
+
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

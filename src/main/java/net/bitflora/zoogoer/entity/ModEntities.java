@@ -38,6 +38,12 @@ public class ModEntities {
                 .sized(2.5f, 2.5f).build("star_zoo_goer"));
 
 
+    public static final RegistryObject<EntityType<SteveEntity>> STEVE_MOB =
+            ENTITY_TYPES.register("steve_mob",
+                    () -> EntityType.Builder.of(SteveEntity::new, MobCategory.CREATURE)
+                            .sized(0.6F, 1.95F) // Same size as player
+                            .build("steve_mob"));
+
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
     }
