@@ -11,11 +11,19 @@
   "entity.zoogoer.monster_zoo_goer": "Monster Lover",
   "entity.zoogoer.star_zoo_goer": "Star Gazer",
   "entity.zoogoer.zoo_goer": "Zoo Goer",
+
   "item.zoogoer.bird_zoo_goer_spawn_egg": "Bird Watcher Spawn Egg",
   "item.zoogoer.fish_zoo_goer_spawn_egg": "Fish Fan Spawn Egg",
   "item.zoogoer.herp_zoo_goer_spawn_egg": "Herp Enthusiast Spawn Egg",
   "item.zoogoer.monster_zoo_goer_spawn_egg": "Monster Lover Spawn Egg",
   "item.zoogoer.star_zoo_goer_spawn_egg": "Star Gazer Spawn Egg",
   "item.zoogoer.zoo_goer_spawn_egg": "Zoo Goer Spawn Egg",
+
+  "entity.zoogoer.steve_entity": "Steve Irwin",
+  "item.zoogoer.steve_spawn_egg": "Steve Spawn Egg",
+  "subtitles.entity.steve_entity.crikey": "Steve: Crikey!",
+  "subtitles.entity.steve_entity.hurt": "Steve: Hey hey hey hey! Settle down, mate!",
+  "subtitles.entity.steve_entity.look": "Steve: Look at that!",
+
   "creativetab.zoogoer_tab": "Zoo Goer"
 }

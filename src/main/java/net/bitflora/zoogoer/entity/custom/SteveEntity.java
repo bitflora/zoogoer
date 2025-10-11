@@ -15,6 +15,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.bitflora.zoogoer.entity.ai.AnimalAIWanderRanged;
 import net.bitflora.zoogoer.entity.ai.SpeciesCounterGoal;
+import net.bitflora.zoogoer.sound.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -50,12 +51,12 @@ public class SteveEntity extends PathfinderMob {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.VILLAGER_AMBIENT;
+        return ModSounds.STEVE_CRIKEY.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return SoundEvents.VILLAGER_HURT;
+        return ModSounds.STEVE_HURT.get();
     }
 
     @Override

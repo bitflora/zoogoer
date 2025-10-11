@@ -13,11 +13,17 @@ public class ModSounds {
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS =
             DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, ZooGoerMod.MOD_ID);
 
-    // public static final RegistryObject<SoundEvent> BAR_BRAWL = registerSoundEvents("bar_brawl");
+
+    public static final RegistryObject<SoundEvent> STEVE_CRIKEY =
+            registerSoundEvent("entity.steve_entity.crikey");
+
+    public static final RegistryObject<SoundEvent> STEVE_HURT =
+            registerSoundEvent("entity.steve_entity.hurt");
 
 
-    private static RegistryObject<SoundEvent> registerSoundEvents(String name) {
-        return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(ZooGoerMod.MOD_ID, name)));
+    private static RegistryObject<SoundEvent> registerSoundEvent(String name) {
+        ResourceLocation id = new ResourceLocation(ZooGoerMod.MOD_ID, name);
+        return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(id));
     }
 
     public static void register(IEventBus eventBus) {

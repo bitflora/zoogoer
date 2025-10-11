@@ -1,0 +1,42 @@
+{
+  "entity.steve_entity.crikey": {
+    "subtitle": "subtitles.entity.steve_entity.crikey",
+    "sounds": [
+      {
+        "name": "zoogoer:entity/steve_entity/crikey1",
+        "volume": 0.8,
+        "pitch": 1.0
+      },
+      {
+        "name": "zoogoer:entity/steve_entity/crikey2",
+        "volume": 0.8,
+        "pitch": 1.0
+      }
+    ]
+  },
+  "entity.steve_entity.look": {
+    "subtitle": "subtitles.entity.steve_entity.look",
+    "sounds": [
+      {
+        "name": "zoogoer:entity/steve_entity/have_a_look",
+        "volume": 0.8,
+        "pitch": 1.0
+      },
+      {
+        "name": "zoogoer:entity/steve_entity/look_at_that",
+        "volume": 0.8,
+        "pitch": 1.0
+      }
+    ]
+  },
+  "entity.steve_entity.hurt": {
+    "subtitle": "subtitles.entity.steve_entity.hurt",
+    "sounds": [
+      {
+        "name": "zoogoer:entity/steve_entity/hurt",
+        "volume": 0.8,
+        "pitch": 1.0
+      }
+    ]
+  }
+}
