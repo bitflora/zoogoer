@@ -6,12 +6,15 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import net.bitflora.zoogoer.entity.ai.AnimalAIWanderRanged;
+import net.bitflora.zoogoer.entity.ai.SpeciesCounterGoal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -30,21 +33,18 @@ public class SteveEntity extends PathfinderMob {
 
     @Override
     protected void registerGoals() {
-        // Basic AI goals - customize as needed
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new PanicGoal(this, 1.2D));
-        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Player.class, 6.0F, 1.0D, 1.2D));
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+
+        this.goalSelector.addGoal(1, new AnimalAIWanderRanged(this, 100, 2.0, 25, 25));
+        this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Animal.class, 10f));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 20.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.25D)
+                .add(Attributes.MAX_HEALTH, 500.0D)
+                .add(Attributes.MOVEMENT_SPEED, 1.00D)
                 .add(Attributes.FOLLOW_RANGE, 16.0D)
-                .add(Attributes.ARMOR, 0.0D)
+                .add(Attributes.ARMOR, 4.0D)
                 .add(Attributes.ATTACK_DAMAGE, 2.0D);
     }
 
@@ -66,9 +66,7 @@ public class SteveEntity extends PathfinderMob {
 
     public static boolean checkPlayerModelMobSpawnRules(EntityType<SteveEntity> entityType,
             LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return pos.getY() >= level.getSeaLevel() &&
-               level.getBlockState(pos.below()).is(Blocks.GRASS_BLOCK) &&
-               level.getRawBrightness(pos, 0) > 8;
+        return false;
     }
 
     @Override

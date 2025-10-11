@@ -16,7 +16,7 @@ import net.minecraft.world.entity.player.PlayerModelPart;
 public class SteveRenderer extends MobRenderer<SteveEntity, PlayerModel<SteveEntity>> {
 
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation("yourmod", "textures/entity/player_model_mob.png");
+            new ResourceLocation("zoogoer", "textures/entity/steve_entity.png");
 
     public SteveRenderer(EntityRendererProvider.Context context) {
         super(context, new PlayerModel<>(context.bakeLayer(ModelLayers.PLAYER), false), 0.5F);
