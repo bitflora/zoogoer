@@ -15,6 +15,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.bitflora.zoogoer.entity.ai.AnimalAIWanderRanged;
 import net.bitflora.zoogoer.entity.ai.SpeciesCounterGoal;
+import net.bitflora.zoogoer.entity.ai.SteveWanderGoal;
 import net.bitflora.zoogoer.sound.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -36,8 +37,9 @@ public class SteveEntity extends PathfinderMob {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
 
-        this.goalSelector.addGoal(1, new AnimalAIWanderRanged(this, 100, 2.0, 25, 25));
+        this.goalSelector.addGoal(1, new SteveWanderGoal(this, 20D, 1.1, 600, 20));
         this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Animal.class, 10f));
+        this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -47,6 +49,12 @@ public class SteveEntity extends PathfinderMob {
                 .add(Attributes.FOLLOW_RANGE, 16.0D)
                 .add(Attributes.ARMOR, 4.0D)
                 .add(Attributes.ATTACK_DAMAGE, 2.0D);
+    }
+
+    @Override
+    public int getAmbientSoundInterval() {
+        // Default is 80 ticks (4 seconds)
+        return 400; // 400 ticks = 20 seconds
     }
 
     @Override

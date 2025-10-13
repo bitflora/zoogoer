@@ -17,6 +17,9 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> STEVE_CRIKEY =
             registerSoundEvent("entity.steve_entity.crikey");
 
+    public static final RegistryObject<SoundEvent> STEVE_LOOK =
+            registerSoundEvent("entity.steve_entity.look");
+
     public static final RegistryObject<SoundEvent> STEVE_HURT =
             registerSoundEvent("entity.steve_entity.hurt");
 

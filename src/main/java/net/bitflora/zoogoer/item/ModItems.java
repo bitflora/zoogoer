@@ -33,7 +33,7 @@ public class ModItems {
     public static final RegistryObject<Item> STAR_ZOO_GOER_SPAWN_EGG = ITEMS.register("star_zoo_goer_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.STAR_ZOO_GOER, 0x000000, 0xffff00, new Item.Properties()));
 
-public static final RegistryObject<Item> STEVE_SPAWN_EGG = ITEMS.register("steve_spawn_egg",
+    public static final RegistryObject<Item> STEVE_SPAWN_EGG = ITEMS.register("steve_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.STEVE_MOB, 0xffffff, 0x000000, new Item.Properties()));
 
 
