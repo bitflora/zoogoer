@@ -18,6 +18,8 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.entity.player.Player;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.function.Supplier;
 
 import org.slf4j.Logger;
@@ -69,16 +71,24 @@ public class AnimatedSpawnEggItem extends Item {
     }
 
     private void scheduleNextTick(ServerLevel level, SpawnAnimationTask task) {
-        level.getServer().tell(new net.minecraft.server.TickTask(
-            level.getServer().getTickCount() + 1,
-            () -> {
-                if (task.tick()) {
-                    // Continue animation - schedule next tick
-                    scheduleNextTick(level, task);
-                }
-                // If tick() returns false, animation is complete and mob is spawned
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                level.getServer().tell(new net.minecraft.server.TickTask(
+                    level.getServer().getTickCount() + 1,
+                    () -> {
+                        if (task.tick()) {
+                            // Continue animation - schedule next tick
+                            scheduleNextTick(level, task);
+                        }
+                        // If tick() returns false, animation is complete and mob is spawned
+                    }
+                ));
             }
-        ));
+        }, 100);
+
+
     }
 
     public int getBackgroundColor() {
