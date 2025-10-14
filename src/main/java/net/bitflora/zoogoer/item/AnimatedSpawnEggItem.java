@@ -1,5 +1,6 @@
 package net.bitflora.zoogoer.item;
 
+import net.bitflora.zoogoer.entity.ai.SteveWanderGoal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -19,7 +20,11 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.function.Supplier;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class AnimatedSpawnEggItem extends Item {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AnimatedSpawnEggItem.class);
     private final Supplier<? extends EntityType<? extends Mob>> entityTypeSupplier;
     private final int backgroundColor;
     private final int highlightColor;
@@ -105,6 +110,7 @@ public class AnimatedSpawnEggItem extends Item {
         // Returns true to continue animation, false when complete
         public boolean tick() {
             currentTick++;
+            LOGGER.info("%% tick() " + currentTick);
 
             if (currentTick < ANIMATION_DURATION) {
                 // Continue animation
@@ -122,6 +128,7 @@ public class AnimatedSpawnEggItem extends Item {
 
                 return true; // Continue animation
             } else {
+                LOGGER.info("%% spawn mob ");
                 // Animation complete - spawn the mob
                 spawnMobWithFinalAnimation();
                 return false; // Stop animation

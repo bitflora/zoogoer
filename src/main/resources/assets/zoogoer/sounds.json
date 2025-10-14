@@ -4,12 +4,12 @@
     "sounds": [
       {
         "name": "zoogoer:entity/steve_entity/crikey1",
-        "volume": 0.8,
+        "volume": 0.5,
         "pitch": 1.0
       },
       {
         "name": "zoogoer:entity/steve_entity/crikey2",
-        "volume": 0.8,
+        "volume": 0.5,
         "pitch": 1.0
       }
     ]
