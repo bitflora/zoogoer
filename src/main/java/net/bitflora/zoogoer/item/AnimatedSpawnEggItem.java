@@ -86,7 +86,7 @@ public class AnimatedSpawnEggItem extends Item {
                     }
                 ));
             }
-        }, 100);
+        }, 50);
 
 
     }
@@ -120,7 +120,6 @@ public class AnimatedSpawnEggItem extends Item {
         // Returns true to continue animation, false when complete
         public boolean tick() {
             currentTick++;
-            LOGGER.info("%% tick() " + currentTick);
 
             if (currentTick < ANIMATION_DURATION) {
                 // Continue animation
@@ -129,16 +128,17 @@ public class AnimatedSpawnEggItem extends Item {
                 // Play periodic sounds
                 if (currentTick % 60 == 0) { // Every 3 seconds
                     level.playSound(null, spawnPos, SoundEvents.PORTAL_AMBIENT, SoundSource.NEUTRAL, 0.5F, 1.0F + (currentTick / 300.0F));
+                } else if((currentTick + 30) % 60 == 0) {
+                    level.playSound(null, spawnPos, SoundEvents.ENDER_DRAGON_DEATH, SoundSource.NEUTRAL, 0.5F, 1.0F + (currentTick / 300.0F));
                 }
 
                 // Crescendo sound at 75% through
                 if (currentTick == (int)(ANIMATION_DURATION * 0.75)) {
-                    level.playSound(null, spawnPos, SoundEvents.ENDER_DRAGON_GROWL, SoundSource.NEUTRAL, 0.8F, 1.2F);
+                    level.playSound(null, spawnPos, SoundEvents.ENDER_DRAGON_DEATH, SoundSource.NEUTRAL, 0.8F, 1.2F);
                 }
 
                 return true; // Continue animation
             } else {
-                LOGGER.info("%% spawn mob ");
                 // Animation complete - spawn the mob
                 spawnMobWithFinalAnimation();
                 return false; // Stop animation
