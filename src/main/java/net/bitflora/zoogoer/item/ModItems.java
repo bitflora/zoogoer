@@ -34,7 +34,12 @@ public class ModItems {
             () -> new ForgeSpawnEggItem(ModEntities.STAR_ZOO_GOER, 0x000000, 0xffff00, new Item.Properties()));
 
     public static final RegistryObject<Item> STEVE_SPAWN_EGG = ITEMS.register("steve_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntities.STEVE_MOB, 0xffffff, 0x000000, new Item.Properties()));
+        () -> new AnimatedSpawnEggItem(
+                ModEntities.STEVE_MOB,  // Your entity type supplier
+                0xffffff,               // Background color (white)
+                0x000000,               // Highlight color (black)
+                new Item.Properties()
+        ));
 
 
     public static void register(IEventBus eventBus) {
