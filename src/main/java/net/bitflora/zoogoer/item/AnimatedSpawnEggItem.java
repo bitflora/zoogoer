@@ -122,31 +122,44 @@ public class AnimatedSpawnEggItem extends Item {
             currentTick++;
 
             if (currentTick < ANIMATION_DURATION) {
+                float progress = currentTick / (float)ANIMATION_DURATION;
                 // Continue animation
-                createBuildupAnimation();
+                createBuildupAnimation(progress);
 
                 // Play periodic sounds
-                if (currentTick % 60 == 0) { // Every 3 seconds
-                    level.playSound(null, spawnPos, SoundEvents.PORTAL_AMBIENT, SoundSource.NEUTRAL, 0.5F, 1.0F + (currentTick / 300.0F));
-                } else if((currentTick + 30) % 60 == 0) {
-                    level.playSound(null, spawnPos, SoundEvents.ENDER_DRAGON_DEATH, SoundSource.NEUTRAL, 0.5F, 1.0F + (currentTick / 300.0F));
+                if (progress <= 0.75) {
+                    if (currentTick % 60 == 0) { // Every 3 seconds
+                        level.playSound(null, spawnPos, SoundEvents.PORTAL_AMBIENT, SoundSource.NEUTRAL, 0.5F, 1.0F + (currentTick / 300.0F));
+                    } else if ((currentTick + 30) % 60 == 0) {
+                        level.playSound(null, spawnPos, SoundEvents.ENDER_DRAGON_DEATH, SoundSource.NEUTRAL, 0.5F, 1.0F + (currentTick / 300.0F));
+                    }
                 }
 
                 // Crescendo sound at 75% through
-                if (currentTick == (int)(ANIMATION_DURATION * 0.75)) {
-                    level.playSound(null, spawnPos, SoundEvents.ENDER_DRAGON_DEATH, SoundSource.NEUTRAL, 0.8F, 1.2F);
-                }
+                // if (currentTick == (int)(ANIMATION_DURATION * 0.75)) {
+                //     level.playSound(null, spawnPos, SoundEvents.ENDER_DRAGON_DEATH, SoundSource.NEUTRAL, 0.8F, 1.2F);
+                // }
 
                 return true; // Continue animation
             } else {
-                // Animation complete - spawn the mob
-                spawnMobWithFinalAnimation();
+                // Animation complete - spawn the mob in 2 seconds
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        level.getServer().tell(new net.minecraft.server.TickTask(
+                            level.getServer().getTickCount(),
+                            () -> {
+                                spawnMobWithFinalAnimation();
+                            }
+                        ));
+                    }
+                }, 2000);
                 return false; // Stop animation
             }
         }
 
-        private void createBuildupAnimation() {
-            float progress = currentTick / (float)ANIMATION_DURATION;
+        private void createBuildupAnimation(float progress) {
             int particleCount = (int)(5 + progress * 15); // Increase particles over time
 
             // Swirling portal particles
@@ -222,26 +235,57 @@ public class AnimatedSpawnEggItem extends Item {
             if (progress > 0.5 && currentTick % 3 == 0) {
                 int breathCount = (int)((progress - 0.5) * 20);
                 for (int i = 0; i < breathCount; i++) {
-                    double offsetX = (level.random.nextDouble() - 0.5) * 2.0;
-                    double offsetY = level.random.nextDouble() * progress * 2.0;
-                    double offsetZ = (level.random.nextDouble() - 0.5) * 2.0;
-
-                    level.sendParticles(
-                        ParticleTypes.DRAGON_BREATH,
-                        pos.x + offsetX,
-                        pos.y + offsetY,
-                        pos.z + offsetZ,
-                        1,
-                        0, 0.05, 0,
-                        0.05
-                    );
+                    renderDragonBreath(progress);
                 }
+            }
+
+            if (progress >= 0.7 && progress <= 0.85) {
+                renderExplosion(1);
+            }
+
+            if (progress >= 0.8 && progress <= 0.9) {
+                renderFirework(1);
             }
         }
 
+
         private void spawnMobWithFinalAnimation() {
+            // renderExplosion();
+            renderVerticalLightBeams();
+            renderRadialLightBeams();
+            // renderFirework();
+
+            // Final dramatic sound
+            //level.playSound(null, spawnPos, SoundEvents.ENDER_DRAGON_DEATH, SoundSource.NEUTRAL, 1.5F, 1.0F);
+            level.playSound(null, spawnPos, SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.NEUTRAL, 0.8F, 1.2F);
+
+            // Finally spawn the mob
+            Mob entity = entityType.create(level, null, null, spawnPos, MobSpawnType.SPAWN_EGG, true, false);
+            if (entity != null) {
+                level.addFreshEntity(entity);
+                level.gameEvent(player, GameEvent.ENTITY_PLACE, spawnPos);
+            }
+        }
+
+        private void renderDragonBreath(float progress) {
+            double offsetX = (level.random.nextDouble() - 0.5) * 2.0;
+            double offsetY = level.random.nextDouble() * progress * 2.0;
+            double offsetZ = (level.random.nextDouble() - 0.5) * 2.0;
+
+            level.sendParticles(
+                ParticleTypes.DRAGON_BREATH,
+                pos.x + offsetX,
+                pos.y + offsetY,
+                pos.z + offsetZ,
+                1,
+                0, 0.05, 0,
+                0.05
+            );
+        }
+
+        private void renderExplosion(int amount) {
             // Create massive explosion effect
-            for (int i = 0; i < 150; i++) {
+            for (int i = 0; i < amount; i++) {
                 double offsetX = (level.random.nextDouble() - 0.5) * 3.0;
                 double offsetY = level.random.nextDouble() * 3.0;
                 double offsetZ = (level.random.nextDouble() - 0.5) * 3.0;
@@ -262,7 +306,9 @@ public class AnimatedSpawnEggItem extends Item {
                     0.1
                 );
             }
+        }
 
+        private void renderVerticalLightBeams() {
             // Massive vertical light beams shooting up
             for (int i = 0; i < 50; i++) {
                 double height = i * 0.3;
@@ -282,7 +328,9 @@ public class AnimatedSpawnEggItem extends Item {
                     0.02
                 );
             }
+        }
 
+        private void renderRadialLightBeams() {
             // Radial light beams shooting outward
             for (int i = 0; i < 16; i++) {
                 double angle = (Math.PI * 2 * i) / 16;
@@ -304,9 +352,11 @@ public class AnimatedSpawnEggItem extends Item {
                     );
                 }
             }
+        }
 
+        private void renderFirework(int amount) {
             // Firework burst
-            for (int i = 0; i < 40; i++) {
+            for (int i = 0; i < amount; i++) {
                 double velocityX = (level.random.nextDouble() - 0.5) * 0.7;
                 double velocityY = level.random.nextDouble() * 0.7;
                 double velocityZ = (level.random.nextDouble() - 0.5) * 0.7;
@@ -322,17 +372,6 @@ public class AnimatedSpawnEggItem extends Item {
                     velocityZ,
                     0.1
                 );
-            }
-
-            // Final dramatic sound
-            level.playSound(null, spawnPos, SoundEvents.ENDER_DRAGON_DEATH, SoundSource.NEUTRAL, 1.5F, 1.0F);
-            level.playSound(null, spawnPos, SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.NEUTRAL, 0.8F, 1.2F);
-
-            // Finally spawn the mob
-            Mob entity = entityType.create(level, null, null, spawnPos, MobSpawnType.SPAWN_EGG, true, false);
-            if (entity != null) {
-                level.addFreshEntity(entity);
-                level.gameEvent(player, GameEvent.ENTITY_PLACE, spawnPos);
             }
         }
     }

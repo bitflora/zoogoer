@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "e": {
+      "tag": "forge:eggs"
+    },
+    "E": {
+      "item": "minecraft:emerald_block"
+    }
+  },
+  "pattern": [
+    "EEE",
+    "EeE",
+    "EEE"
+  ],
+  "result": {
+    "item": "zoogoer:steve_spawn_egg"
+  },
+  "show_notification": true
+}
