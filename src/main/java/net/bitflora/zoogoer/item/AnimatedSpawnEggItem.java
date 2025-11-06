@@ -4,9 +4,11 @@ import net.bitflora.zoogoer.entity.ai.SteveWanderGoal;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -188,8 +190,10 @@ public class AnimatedSpawnEggItem extends Item {
                     double offsetX = (level.random.nextDouble() - 0.5) * 1.0;
                     double offsetZ = (level.random.nextDouble() - 0.5) * 1.0;
 
+                    SimpleParticleType particle = level.random.nextBoolean() ? ParticleTypes.END_ROD : ParticleTypes.SOUL_FIRE_FLAME;
+
                     level.sendParticles(
-                        ParticleTypes.END_ROD,
+                        particle,
                         pos.x + offsetX,
                         pos.y,
                         pos.z + offsetZ,
@@ -216,8 +220,10 @@ public class AnimatedSpawnEggItem extends Item {
                         double beamX = startX + (pos.x - startX) * beamProgress;
                         double beamZ = startZ + (pos.z - startZ) * beamProgress;
 
+                        SimpleParticleType particle = level.random.nextBoolean() ? ParticleTypes.END_ROD : ParticleTypes.SOUL_FIRE_FLAME;
+
                         level.sendParticles(
-                            ParticleTypes.END_ROD,
+                            particle,
                             beamX,
                             pos.y + 0.5 + level.random.nextDouble() * 2.0,
                             beamZ,
@@ -239,7 +245,11 @@ public class AnimatedSpawnEggItem extends Item {
                 }
             }
 
-            if (progress >= 0.7 && progress <= 0.85) {
+            if (progress < 0.7) {
+                if (level.random.nextInt(10) == 1) {
+                    renderExplosion(1);
+                }
+            }else if (progress >= 0.7 && progress <= 0.85) {
                 renderExplosion(1);
             }
 
@@ -251,8 +261,8 @@ public class AnimatedSpawnEggItem extends Item {
 
         private void spawnMobWithFinalAnimation() {
             // renderExplosion();
-            renderVerticalLightBeams();
-            renderRadialLightBeams();
+            renderVerticalLightBeams(level.random);
+            renderRadialLightBeams(level.random);
             // renderFirework();
 
             // Final dramatic sound
@@ -308,9 +318,9 @@ public class AnimatedSpawnEggItem extends Item {
             }
         }
 
-        private void renderVerticalLightBeams() {
+        private void renderVerticalLightBeams(RandomSource random) {
             // Massive vertical light beams shooting up
-            for (int i = 0; i < 50; i++) {
+            for (int i = 0; i < 25; i++) {
                 double height = i * 0.3;
                 double angle = level.random.nextDouble() * Math.PI * 2;
                 double radius = 0.2 + level.random.nextDouble() * 0.4;
@@ -318,8 +328,10 @@ public class AnimatedSpawnEggItem extends Item {
                 double offsetX = Math.cos(angle) * radius;
                 double offsetZ = Math.sin(angle) * radius;
 
+                SimpleParticleType particle = random.nextBoolean() ? ParticleTypes.DRAGON_BREATH : ParticleTypes.SOUL_FIRE_FLAME;
+
                 level.sendParticles(
-                    ParticleTypes.END_ROD,
+                    particle,
                     pos.x + offsetX,
                     pos.y + height,
                     pos.z + offsetZ,
@@ -330,17 +342,18 @@ public class AnimatedSpawnEggItem extends Item {
             }
         }
 
-        private void renderRadialLightBeams() {
+        private void renderRadialLightBeams(RandomSource random) {
             // Radial light beams shooting outward
-            for (int i = 0; i < 16; i++) {
-                double angle = (Math.PI * 2 * i) / 16;
+            for (int i = 0; i < 8; i++) {
+                double angle = (Math.PI * 2 * i) / 8;
                 for (int j = 0; j < 10; j++) {
                     double distance = j * 0.3;
                     double offsetX = Math.cos(angle) * distance;
                     double offsetZ = Math.sin(angle) * distance;
 
+                    SimpleParticleType particle = random.nextBoolean() ? ParticleTypes.END_ROD : ParticleTypes.SOUL_FIRE_FLAME;
                     level.sendParticles(
-                        ParticleTypes.END_ROD,
+                        particle,
                         pos.x + offsetX,
                         pos.y + 1.0,
                         pos.z + offsetZ,
@@ -362,7 +375,7 @@ public class AnimatedSpawnEggItem extends Item {
                 double velocityZ = (level.random.nextDouble() - 0.5) * 0.7;
 
                 level.sendParticles(
-                    ParticleTypes.FIREWORK,
+                    ParticleTypes.SOUL_FIRE_FLAME,
                     pos.x,
                     pos.y + 1.5,
                     pos.z,
