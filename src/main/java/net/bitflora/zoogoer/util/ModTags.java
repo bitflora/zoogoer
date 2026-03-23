@@ -13,19 +13,19 @@ import net.minecraft.world.level.block.Block;
 public class ModTags {
     public static class Entities {
         public static final TagKey<EntityType<?>> ZOO_GOER_IGNORED_SPECIES =
-            TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(ZooGoerMod.MOD_ID, "zoo_goer_ignored_species"));
+            TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(ZooGoerMod.MOD_ID, "zoo_goer_ignored_species"));
     }
 
     public static class Blocks {
         private static TagKey<Block> tag(String name) {
-            return BlockTags.create(new ResourceLocation(ZooGoerMod.MOD_ID, name));
+            return BlockTags.create(ResourceLocation.fromNamespaceAndPath(ZooGoerMod.MOD_ID, name));
         }
     }
 
     public static class Items {
 
         private static TagKey<Item> tag(String name) {
-            return ItemTags.create(new ResourceLocation(ZooGoerMod.MOD_ID, name));
+            return ItemTags.create(ResourceLocation.fromNamespaceAndPath(ZooGoerMod.MOD_ID, name));
         }
     }
 }

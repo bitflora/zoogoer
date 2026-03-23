@@ -6,6 +6,6 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ModModelLayers {
     public static final ModelLayerLocation ZOO_GOER_LAYER = new ModelLayerLocation(
-            new ResourceLocation(ZooGoerMod.MOD_ID, "zoo_goer_layer"), "main");
+            ResourceLocation.fromNamespaceAndPath(ZooGoerMod.MOD_ID, "zoo_goer_layer"), "main");
 
 }

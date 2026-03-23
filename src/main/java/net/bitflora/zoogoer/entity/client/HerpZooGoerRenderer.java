@@ -15,6 +15,6 @@ public class HerpZooGoerRenderer extends MobRenderer<HerpZooGoerEntity, Villager
 
     @Override
     public ResourceLocation getTextureLocation(HerpZooGoerEntity entity) {
-        return new ResourceLocation(ZooGoerMod.MOD_ID, "textures/entity/herp.png");
+        return ResourceLocation.fromNamespaceAndPath(ZooGoerMod.MOD_ID, "textures/entity/herp.png");
     }
 }

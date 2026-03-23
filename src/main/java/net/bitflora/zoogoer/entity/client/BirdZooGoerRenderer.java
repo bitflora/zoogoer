@@ -15,6 +15,6 @@ public class BirdZooGoerRenderer extends MobRenderer<BirdZooGoerEntity, Villager
 
     @Override
     public ResourceLocation getTextureLocation(BirdZooGoerEntity entity) {
-        return new ResourceLocation(ZooGoerMod.MOD_ID, "textures/entity/bird.png");
+        return ResourceLocation.fromNamespaceAndPath(ZooGoerMod.MOD_ID, "textures/entity/bird.png");
     }
 }

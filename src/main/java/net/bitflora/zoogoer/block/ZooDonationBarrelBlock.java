@@ -21,8 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraft.world.InteractionHand;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
@@ -30,10 +29,21 @@ import net.minecraft.world.item.ItemStack;
 
 public class ZooDonationBarrelBlock extends BaseEntityBlock {
 
+    public static final MapCodec<ZooDonationBarrelBlock> CODEC = simpleCodec(ZooDonationBarrelBlock::new);
+
+    @Override
+    public MapCodec<? extends ZooDonationBarrelBlock> codec() {
+        return CODEC;
+    }
+
     public ZooDonationBarrelBlock() {
-        super(BlockBehaviour.Properties.of()
+        this(BlockBehaviour.Properties.of()
             .mapColor(MapColor.WOOD)
             .strength(1.3F, 3.0F));
+    }
+
+    public ZooDonationBarrelBlock(BlockBehaviour.Properties properties) {
+        super(properties);
     }
 
     protected ZooGoerEntity getEntityType(ServerLevel level) {
@@ -42,12 +52,12 @@ public class ZooDonationBarrelBlock extends BaseEntityBlock {
 
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos,
-                               Player player, InteractionHand hand, BlockHitResult hit) {
+    public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
+                               Player player, BlockHitResult hit) {
         if (!level.isClientSide()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof ZooDonationBarrelBlockEntity spawnerEntity) {
-                NetworkHooks.openScreen((ServerPlayer) player, spawnerEntity, pos);
+                ((ServerPlayer) player).openMenu(spawnerEntity);
             }
         }
         return InteractionResult.sidedSuccess(level.isClientSide());
@@ -80,7 +90,7 @@ public class ZooDonationBarrelBlock extends BaseEntityBlock {
         ZooGoerEntity walker = getEntityType(level);
         walker.setOrigin(spawnerPos);
         walker.setPos(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5);
-        walker.finalizeSpawn(level, level.getCurrentDifficultyAt(spawnPos), MobSpawnType.SPAWNER, null, null);
+        walker.finalizeSpawn(level, level.getCurrentDifficultyAt(spawnPos), MobSpawnType.SPAWNER, null);
 
         level.addFreshEntityWithPassengers(walker);
     }

@@ -1,13 +1,18 @@
 package net.bitflora.zoogoer.event;
 
 import net.bitflora.zoogoer.ZooGoerMod;
+import net.bitflora.zoogoer.block.entity.ModBlockEntities;
+import net.bitflora.zoogoer.block.entity.ZooDonationBarrelBlockEntity;
 import net.bitflora.zoogoer.entity.ModEntities;
 import net.bitflora.zoogoer.entity.custom.*;
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 
-@Mod.EventBusSubscriber(modid = ZooGoerMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = ZooGoerMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class ModEventBusEvents {
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
@@ -19,5 +24,14 @@ public class ModEventBusEvents {
         event.put(ModEntities.STAR_ZOO_GOER.get(), StarZooGoerEntity.createAttributes().build());
 
         event.put(ModEntities.STEVE_MOB.get(), SteveEntity.createAttributes().build());
+    }
+
+    @SubscribeEvent
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(
+            Capabilities.ItemHandler.BLOCK,
+            ModBlockEntities.MOB_SPAWNER_BLOCK_ENTITY.get(),
+            (be, side) -> be.getItemHandler()
+        );
     }
 }

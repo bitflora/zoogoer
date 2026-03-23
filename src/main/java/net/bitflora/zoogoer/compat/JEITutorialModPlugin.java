@@ -16,7 +16,7 @@ import java.util.List;
 public class JEITutorialModPlugin implements IModPlugin {
     @Override
     public ResourceLocation getPluginUid() {
-        return new ResourceLocation(ZooGoerMod.MOD_ID, "jei_plugin");
+        return ResourceLocation.fromNamespaceAndPath(ZooGoerMod.MOD_ID, "jei_plugin");
     }
 
     @Override

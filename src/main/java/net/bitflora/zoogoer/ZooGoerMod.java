@@ -16,18 +16,18 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.minecraft.core.registries.Registries;
 
 import org.slf4j.Logger;
 
@@ -39,40 +39,38 @@ public class ZooGoerMod {
 
 
     public static final DeferredRegister<Block> BLOCKS =
-            DeferredRegister.create(ForgeRegistries.BLOCKS, ZooGoerMod.MOD_ID);
+            DeferredRegister.create(Registries.BLOCK, ZooGoerMod.MOD_ID);
 
 
     public static final DeferredRegister<Item> ITEMS =
-            DeferredRegister.create(ForgeRegistries.ITEMS, ZooGoerMod.MOD_ID);
+            DeferredRegister.create(Registries.ITEM, ZooGoerMod.MOD_ID);
 
-    public static final RegistryObject<Block> ZOO_DONATION_BARREL_BLOCK = BLOCKS.register("zoo_donation_barrel_block", ZooDonationBarrelBlock::new);
-    public static final RegistryObject<Item> ZOO_DONATION_BARREL_BLOCK_ITEM = ITEMS.register("zoo_donation_barrel_block",
+    public static final DeferredHolder<Block, Block> ZOO_DONATION_BARREL_BLOCK = BLOCKS.register("zoo_donation_barrel_block", () -> new ZooDonationBarrelBlock());
+    public static final DeferredHolder<Item, Item> ZOO_DONATION_BARREL_BLOCK_ITEM = ITEMS.register("zoo_donation_barrel_block",
         () -> new BlockItem(ZOO_DONATION_BARREL_BLOCK.get(), new Item.Properties()));
 
-    public static final RegistryObject<Block> BIRD_DONATION_BARREL_BLOCK = BLOCKS.register("bird_donation_barrel_block", BirdDonationBarrelBlock::new);
-    public static final RegistryObject<Item> BIRD_DONATION_BARREL_BLOCK_ITEM = ITEMS.register("bird_donation_barrel_block",
+    public static final DeferredHolder<Block, Block> BIRD_DONATION_BARREL_BLOCK = BLOCKS.register("bird_donation_barrel_block", BirdDonationBarrelBlock::new);
+    public static final DeferredHolder<Item, Item> BIRD_DONATION_BARREL_BLOCK_ITEM = ITEMS.register("bird_donation_barrel_block",
         () -> new BlockItem(BIRD_DONATION_BARREL_BLOCK.get(), new Item.Properties()));
 
 
-    public static final RegistryObject<Block> FISH_DONATION_BARREL_BLOCK = BLOCKS.register("fish_donation_barrel_block", FishDonationBarrelBlock::new);
-    public static final RegistryObject<Item> FISH_DONATION_BARREL_BLOCK_ITEM = ITEMS.register("fish_donation_barrel_block",
+    public static final DeferredHolder<Block, Block> FISH_DONATION_BARREL_BLOCK = BLOCKS.register("fish_donation_barrel_block", FishDonationBarrelBlock::new);
+    public static final DeferredHolder<Item, Item> FISH_DONATION_BARREL_BLOCK_ITEM = ITEMS.register("fish_donation_barrel_block",
         () -> new BlockItem(FISH_DONATION_BARREL_BLOCK.get(), new Item.Properties()));
 
-    public static final RegistryObject<Block> HERP_DONATION_BARREL_BLOCK = BLOCKS.register("herp_donation_barrel_block", HerpDonationBarrelBlock::new);
-    public static final RegistryObject<Item> HERP_DONATION_BARREL_BLOCK_ITEM = ITEMS.register("herp_donation_barrel_block",
+    public static final DeferredHolder<Block, Block> HERP_DONATION_BARREL_BLOCK = BLOCKS.register("herp_donation_barrel_block", HerpDonationBarrelBlock::new);
+    public static final DeferredHolder<Item, Item> HERP_DONATION_BARREL_BLOCK_ITEM = ITEMS.register("herp_donation_barrel_block",
         () -> new BlockItem(HERP_DONATION_BARREL_BLOCK.get(), new Item.Properties()));
 
-    public static final RegistryObject<Block> MONSTER_DONATION_BARREL_BLOCK = BLOCKS.register("monster_donation_barrel_block", MonsterDonationBarrelBlock::new);
-    public static final RegistryObject<Item> MONSTER_DONATION_BARREL_BLOCK_ITEM = ITEMS.register("monster_donation_barrel_block",
+    public static final DeferredHolder<Block, Block> MONSTER_DONATION_BARREL_BLOCK = BLOCKS.register("monster_donation_barrel_block", MonsterDonationBarrelBlock::new);
+    public static final DeferredHolder<Item, Item> MONSTER_DONATION_BARREL_BLOCK_ITEM = ITEMS.register("monster_donation_barrel_block",
         () -> new BlockItem(MONSTER_DONATION_BARREL_BLOCK.get(), new Item.Properties()));
 
-    public static final RegistryObject<Block> STAR_DONATION_BARREL_BLOCK = BLOCKS.register("star_donation_barrel_block", StarDonationBarrelBlock::new);
-    public static final RegistryObject<Item> STAR_DONATION_BARREL_BLOCK_ITEM = ITEMS.register("star_donation_barrel_block",
+    public static final DeferredHolder<Block, Block> STAR_DONATION_BARREL_BLOCK = BLOCKS.register("star_donation_barrel_block", StarDonationBarrelBlock::new);
+    public static final DeferredHolder<Item, Item> STAR_DONATION_BARREL_BLOCK_ITEM = ITEMS.register("star_donation_barrel_block",
         () -> new BlockItem(STAR_DONATION_BARREL_BLOCK.get(), new Item.Properties()));
 
-    public ZooGoerMod() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
+    public ZooGoerMod(IEventBus modEventBus) {
         BLOCKS.register(modEventBus);
         ITEMS.register(modEventBus);
 
@@ -90,7 +88,7 @@ public class ZooGoerMod {
 
         ModRecipes.register(modEventBus);
 
-        MinecraftForge.EVENT_BUS.register(this);
+        NeoForge.EVENT_BUS.register(this);
         modEventBus.addListener(this::addCreative);
     }
 
@@ -99,7 +97,7 @@ public class ZooGoerMod {
         if(event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
         }
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-            event.accept(ZOO_DONATION_BARREL_BLOCK_ITEM);
+            event.accept(ZOO_DONATION_BARREL_BLOCK_ITEM.get());
         }
     }
 
@@ -110,7 +108,7 @@ public class ZooGoerMod {
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {

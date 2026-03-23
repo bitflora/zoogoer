@@ -270,7 +270,7 @@ public class AnimatedSpawnEggItem extends Item {
             level.playSound(null, spawnPos, SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.NEUTRAL, 0.8F, 1.2F);
 
             // Finally spawn the mob
-            Mob entity = entityType.create(level, null, null, spawnPos, MobSpawnType.SPAWN_EGG, true, false);
+            Mob entity = entityType.create(level, null, spawnPos, MobSpawnType.SPAWN_EGG, true, false);
             if (entity != null) {
                 level.addFreshEntity(entity);
                 level.gameEvent(player, GameEvent.ENTITY_PLACE, spawnPos);

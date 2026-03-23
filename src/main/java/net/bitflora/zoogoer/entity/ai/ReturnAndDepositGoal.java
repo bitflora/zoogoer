@@ -3,29 +3,24 @@ package net.bitflora.zoogoer.entity.ai;
 import net.bitflora.zoogoer.ZooGoerMod;
 import net.bitflora.zoogoer.entity.custom.ZooGoerEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.ChestBlockEntity;
-import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
 
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,52 +102,50 @@ public class ReturnAndDepositGoal extends Goal {
 
     private void tryDeposit() {
         Level level = this.mob.level();
-        BlockEntity blockEntity = level.getBlockEntity(targetBlock);
 
-        if (blockEntity != null) {
-            // Try to get the item handler capability using the new 1.20.1 system
-            blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(itemHandler -> {
-                final int donation = this.mob.calculatePrimaryDonation();
-                ItemStack emeralds = new ItemStack(Items.EMERALD, donation);
+        // NeoForge 1.21.1: use level.getCapability() instead of blockEntity.getCapability()
+        IItemHandler itemHandler = level.getCapability(Capabilities.ItemHandler.BLOCK, targetBlock, null);
+        if (itemHandler != null) {
+            final int donation = this.mob.calculatePrimaryDonation();
+            ItemStack emeralds = new ItemStack(Items.EMERALD, donation);
 
-                // Try to insert the emeralds
-                if (emeralds.getCount() > 0) {
-                    ItemStack remainder = insertItems(itemHandler, emeralds);
+            // Try to insert the emeralds
+            if (emeralds.getCount() > 0) {
+                ItemStack remainder = insertItems(itemHandler, emeralds);
 
-                    if (remainder.getCount() > 0) {
-                        level.playSound(null, targetBlock,
-                            net.minecraft.sounds.SoundEvents.VILLAGER_NO,
-                            net.minecraft.sounds.SoundSource.BLOCKS,
-                            0.5F, 1.0F);
-                    } else {
-                        level.playSound(null, targetBlock,
-                            net.minecraft.sounds.SoundEvents.VILLAGER_TRADE,
-                            net.minecraft.sounds.SoundSource.BLOCKS,
-                            0.5F, 1.0F);
+                if (remainder.getCount() > 0) {
+                    level.playSound(null, targetBlock,
+                        net.minecraft.sounds.SoundEvents.VILLAGER_NO,
+                        net.minecraft.sounds.SoundSource.BLOCKS,
+                        0.5F, 1.0F);
+                } else {
+                    level.playSound(null, targetBlock,
+                        net.minecraft.sounds.SoundEvents.VILLAGER_TRADE,
+                        net.minecraft.sounds.SoundSource.BLOCKS,
+                        0.5F, 1.0F);
+                }
+
+                // Deposit loot table items
+                var lootTable = mob.getTipLootTable();
+                if (lootTable.isPresent()) {
+                    LOGGER.info("Tip table found: {}", lootTable.get());
+                    boolean tipGiven = false;
+                    for (int i = 0; i < donation % 10; ++i) {
+                        List<ItemStack> lootItems = generateLootTableItems(lootTable.get());
+                        LOGGER.info("Loot generated: {} stacks", lootItems.size());
+                        for (ItemStack lootItem : lootItems) {
+                            tipGiven = true;
+                            ItemStack lootRemainder = insertItems(itemHandler, lootItem);
+                        }
                     }
-
-                    // Deposit loot table items
-                    var lootTable = mob.getTipLootTable();
-                    if (lootTable.isPresent()) {
-                        LOGGER.info("Tip table found: {}", lootTable.get());
-                        boolean tipGiven = false;
-                        for (int i = 0; i < donation % 10; ++i) {
-                            List<ItemStack> lootItems = generateLootTableItems(lootTable.get());
-                            LOGGER.info("Loot generated: {} stacks", lootItems.size());
-                            for (ItemStack lootItem : lootItems) {
-                                tipGiven = true;
-                                ItemStack lootRemainder = insertItems(itemHandler, lootItem);
-                            }
-                        }
-                        if (tipGiven) {
-                            level.playSound(null, targetBlock,
-                                net.minecraft.sounds.SoundEvents.VILLAGER_YES,
-                                net.minecraft.sounds.SoundSource.BLOCKS,
-                                0.5F, 1.0F);
-                        }
+                    if (tipGiven) {
+                        level.playSound(null, targetBlock,
+                            net.minecraft.sounds.SoundEvents.VILLAGER_YES,
+                            net.minecraft.sounds.SoundSource.BLOCKS,
+                            0.5F, 1.0F);
                     }
                 }
-            });
+            }
         }
     }
 
@@ -171,11 +164,12 @@ public class ReturnAndDepositGoal extends Goal {
         Level level = this.mob.level();
 
         // Replace with your custom loot table resource location
-        ResourceLocation lootTableLocation = new ResourceLocation(ZooGoerMod.MOD_ID, tablePath);
+        ResourceLocation lootTableLocation = ResourceLocation.fromNamespaceAndPath(ZooGoerMod.MOD_ID, tablePath);
         LOGGER.info("loot table for {}: {}", this.mob, tablePath);
 
-        // Get the loot table from the server's loot manager
-        LootTable lootTable = level.getServer().getLootData().getLootTable(lootTableLocation);
+        // Get the loot table from the server's reloadable registries (1.21+ API)
+        ResourceKey<LootTable> lootTableKey = ResourceKey.create(Registries.LOOT_TABLE, lootTableLocation);
+        LootTable lootTable = level.getServer().reloadableRegistries().getLootTable(lootTableKey);
 
         // Create loot context
         LootParams.Builder lootParamsBuilder = new LootParams.Builder((ServerLevel) level)

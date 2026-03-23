@@ -78,7 +78,6 @@ public class SteveEntity extends PathfinderMob {
         return false;
     }
 
-    @Override
     public int getExperienceReward() {
         return 5;
     }

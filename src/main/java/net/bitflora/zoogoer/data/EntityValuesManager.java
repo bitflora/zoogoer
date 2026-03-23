@@ -13,10 +13,11 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@Mod.EventBusSubscriber(modid = ZooGoerMod.MOD_ID)
+@EventBusSubscriber(modid = ZooGoerMod.MOD_ID)
 public class EntityValuesManager extends SimpleJsonResourceReloadListener {
     private static final Logger LOGGER = LoggerFactory.getLogger(EntityValuesManager.class);
     private static final Gson GSON = new Gson();
@@ -70,7 +71,7 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
                             if (identifier.startsWith("#")) {
                                 // It's a tag reference
                                 String tagName = identifier.substring(1); // Remove the #
-                                ResourceLocation tagLocation = new ResourceLocation(tagName);
+                                ResourceLocation tagLocation = ResourceLocation.parse(tagName);
                                 TagKey<EntityType<?>> tagKey = TagKey.create(Registries.ENTITY_TYPE, tagLocation);
 
                                 entityTagValues.put(tagKey, value);
@@ -80,8 +81,8 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
                             } else {
                                 // It's an individual entity type
                                 try {
-                                    ResourceLocation entityLocation = new ResourceLocation(identifier);
-                                    EntityType<?> entityType = ForgeRegistries.ENTITY_TYPES.getValue(entityLocation);
+                                    ResourceLocation entityLocation = ResourceLocation.parse(identifier);
+                                    EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(entityLocation);
 
                                     if (entityType != null) {
                                         individualEntityValues.put(entityType, value);
@@ -116,7 +117,7 @@ public class EntityValuesManager extends SimpleJsonResourceReloadListener {
         EntityType<?> entityType = entity.getType();
 
         // Debug logging
-        ResourceLocation entityId = ForgeRegistries.ENTITY_TYPES.getKey(entityType);
+        ResourceLocation entityId = BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
         LOGGER.debug("Checking entity: {} (type: {})", entity.getClass().getSimpleName(), entityId);
 
         // First check individual entity values (higher priority)

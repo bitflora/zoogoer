@@ -3,6 +3,7 @@ package net.bitflora.zoogoer.block.entity;
 import net.bitflora.zoogoer.block.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
@@ -16,13 +17,11 @@ import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.core.NonNullList;
 
 import java.util.stream.IntStream;
 
@@ -35,42 +34,24 @@ public class ZooDonationBarrelBlockEntity extends BaseContainerBlockEntity imple
         }
     };
 
-    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
-
     public ZooDonationBarrelBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.MOB_SPAWNER_BLOCK_ENTITY.get(), pos, state);
     }
 
-    @Override
-    public void onLoad() {
-        super.onLoad();
-        lazyItemHandler = LazyOptional.of(() -> itemHandler);
+    public IItemHandler getItemHandler() {
+        return itemHandler;
     }
 
     @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        lazyItemHandler.invalidate();
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        tag.put("inventory", itemHandler.serializeNBT(registries));
+        super.saveAdditional(tag, registries);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
-        tag.put("inventory", itemHandler.serializeNBT());
-        super.saveAdditional(tag);
-    }
-
-    @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        itemHandler.deserializeNBT(tag.getCompound("inventory"));
-    }
-
-    @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == ForgeCapabilities.ITEM_HANDLER) {
-            return lazyItemHandler.cast();
-        }
-        return super.getCapability(cap, side);
+    public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        itemHandler.deserializeNBT(registries, tag.getCompound("inventory"));
     }
 
     // Container implementation
@@ -120,6 +101,22 @@ public class ZooDonationBarrelBlockEntity extends BaseContainerBlockEntity imple
     @Override
     public boolean stillValid(Player player) {
         return Container.stillValidBlockEntity(this, player);
+    }
+
+    @Override
+    protected NonNullList<ItemStack> getItems() {
+        NonNullList<ItemStack> items = NonNullList.withSize(INVENTORY_SIZE, ItemStack.EMPTY);
+        for (int i = 0; i < INVENTORY_SIZE; i++) {
+            items.set(i, itemHandler.getStackInSlot(i));
+        }
+        return items;
+    }
+
+    @Override
+    public void setItems(NonNullList<ItemStack> items) {
+        for (int i = 0; i < items.size() && i < INVENTORY_SIZE; i++) {
+            itemHandler.setStackInSlot(i, items.get(i));
+        }
     }
 
     @Override

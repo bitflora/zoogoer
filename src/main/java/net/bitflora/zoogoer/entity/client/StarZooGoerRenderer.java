@@ -15,6 +15,6 @@ public class StarZooGoerRenderer extends MobRenderer<StarZooGoerEntity, Villager
 
     @Override
     public ResourceLocation getTextureLocation(StarZooGoerEntity entity) {
-        return new ResourceLocation(ZooGoerMod.MOD_ID, "textures/entity/star.png");
+        return ResourceLocation.fromNamespaceAndPath(ZooGoerMod.MOD_ID, "textures/entity/star.png");
     }
 }

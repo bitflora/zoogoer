@@ -15,6 +15,6 @@ public class MonsterZooGoerRenderer extends MobRenderer<MonsterZooGoerEntity, Vi
 
     @Override
     public ResourceLocation getTextureLocation(MonsterZooGoerEntity entity) {
-        return new ResourceLocation(ZooGoerMod.MOD_ID, "textures/entity/monster.png");
+        return ResourceLocation.fromNamespaceAndPath(ZooGoerMod.MOD_ID, "textures/entity/monster.png");
     }
 }

@@ -3,29 +3,28 @@ package net.bitflora.zoogoer.sound;
 import net.bitflora.zoogoer.ZooGoerMod;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraftforge.common.util.ForgeSoundType;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.minecraft.core.registries.Registries;
 
 public class ModSounds {
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS =
-            DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, ZooGoerMod.MOD_ID);
+            DeferredRegister.create(Registries.SOUND_EVENT, ZooGoerMod.MOD_ID);
 
 
-    public static final RegistryObject<SoundEvent> STEVE_CRIKEY =
+    public static final DeferredHolder<SoundEvent, SoundEvent> STEVE_CRIKEY =
             registerSoundEvent("entity.steve_entity.crikey");
 
-    public static final RegistryObject<SoundEvent> STEVE_LOOK =
+    public static final DeferredHolder<SoundEvent, SoundEvent> STEVE_LOOK =
             registerSoundEvent("entity.steve_entity.look");
 
-    public static final RegistryObject<SoundEvent> STEVE_HURT =
+    public static final DeferredHolder<SoundEvent, SoundEvent> STEVE_HURT =
             registerSoundEvent("entity.steve_entity.hurt");
 
 
-    private static RegistryObject<SoundEvent> registerSoundEvent(String name) {
-        ResourceLocation id = new ResourceLocation(ZooGoerMod.MOD_ID, name);
+    private static DeferredHolder<SoundEvent, SoundEvent> registerSoundEvent(String name) {
+        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(ZooGoerMod.MOD_ID, name);
         return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(id));
     }
 

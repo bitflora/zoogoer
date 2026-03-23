@@ -15,6 +15,6 @@ public class FishZooGoerRenderer extends MobRenderer<FishZooGoerEntity, Villager
 
     @Override
     public ResourceLocation getTextureLocation(FishZooGoerEntity entity) {
-        return new ResourceLocation(ZooGoerMod.MOD_ID, "textures/entity/fish.png");
+        return ResourceLocation.fromNamespaceAndPath(ZooGoerMod.MOD_ID, "textures/entity/fish.png");
     }
 }

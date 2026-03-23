@@ -32,8 +32,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -83,7 +81,7 @@ public class ZooGoerEntity extends AbstractVillager {
     }
 
     public void noticeMob(@Nonnull LivingEntity entity) {
-        ResourceLocation entityType = ForgeRegistries.ENTITY_TYPES.getKey(entity.getType());
+        ResourceLocation entityType = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType());
         UUID entityId = entity.getUUID();
 
         if (!entity.getType().is(ModTags.Entities.ZOO_GOER_IGNORED_SPECIES)) {
@@ -201,7 +199,7 @@ public class ZooGoerEntity extends AbstractVillager {
             this.speciesCount.clear();
             for (String key : speciesTag.getAllKeys()) {
                 int count = speciesTag.getInt(key);
-                this.speciesCount.put(new ResourceLocation(key), count);
+                this.speciesCount.put(ResourceLocation.parse(key), count);
             }
         }
 
@@ -221,16 +219,10 @@ public class ZooGoerEntity extends AbstractVillager {
             if (!speciesString.isEmpty()) {
                 String[] speciesArray = speciesString.split(";");
                 for (String species : speciesArray) {
-                    this.speciesCount.put(new ResourceLocation(species), 1);
+                    this.speciesCount.put(ResourceLocation.parse(species), 1);
                 }
             }
         }
-    }
-
-    @Override
-    public EntityDimensions getDimensions(@Nonnull Pose pose ) {
-        // Villager dimensions: 0.6F width, 1.95F height
-        return EntityDimensions.scalable(0.6F, 1.95F);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
